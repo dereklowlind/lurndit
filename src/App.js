@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import Mainpage from './pages/Mainpage'
+import Showlist from './pages/ShowList'
+
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          
+          <Route path="/list/:id" render={({ match }) => <Showlist id={match.params.id} />} /> 
+          <Route path="/" component={Mainpage} />
+        </Switch>
+        
+      </Router>
     </div>
   );
 }
