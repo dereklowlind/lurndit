@@ -36,6 +36,21 @@ function newTopic(title, docId){
         console.error("Error adding document: ", error);
     });
   }
+
+  function newResource(docId, topic, title, description, url){
+    db.collection("test1").doc(docId).collection("topics").doc(topic).collection("resources").add({
+      datetime: new Date(),
+      title: title,
+      description: description,
+      url: url
+    })
+    .then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+  }
   
 
 function ShowList(props){
@@ -43,13 +58,28 @@ function ShowList(props){
 
     useEffect(() => {
         db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
-          let rows = []
+        //   console.log(dataEntries)
+            let rows = []
           dataEntries.forEach(doc => {
+            let resources = []
+            console.log(doc.id)
+            db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
+                // if(resourceDocs.exists)
+                resourceDocs.forEach(doc => {
+                    resources.push({
+                        resourceId: doc.id,
+                        description: doc.data().description,
+                        title: doc.data().title,
+                        url: doc.data().url
+                    })
+                })
+            })
             const timeStamp = doc.data().datetime.toDate().toString()
             rows.push({
               docId: doc.id,
               timeStamp: timeStamp,
               title: doc.data().title,
+              resources: resources
             })
           })
           console.log(rows);
@@ -61,7 +91,7 @@ function ShowList(props){
         <div>
             <div>{props.id}</div>
             <Button onClick={() => newTopic("test topic", props.id)}>New Topic</Button>
-            <ShowListTable topics={topics} />
+            <ShowListTable topics={topics} newResource={newResource} docId={props.id}/>
         </div>
         
     )
