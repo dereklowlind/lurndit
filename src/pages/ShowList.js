@@ -55,37 +55,48 @@ function newTopic(title, docId){
 
 function ShowList(props){
     const [topics, setTopics] = useState([]);
+    // useEffect(() => {
+    //   db.collection(`test1/${props.id}/topics/*/resources`).onSnapshot((dataEntries) => {
+    //     console.log(dataEntries)
+    //     console.log("break");
+    //     dataEntries.forEach(doc => {console.log(doc.data().url)});
+    //   });
+    // }, []); // run use effect only once
 
     useEffect(() => {
-        db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
-        //   console.log(dataEntries)
-            let rows = []
-          dataEntries.forEach(doc => {
-            let resources = []
-            console.log(doc.id)
-            db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
-                // if(resourceDocs.exists)
-                resourceDocs.forEach(doc => {
-                    resources.push({
-                        resourceId: doc.id,
-                        description: doc.data().description,
-                        title: doc.data().title,
-                        url: doc.data().url
-                    })
-                })
-            })
-            const timeStamp = doc.data().datetime.toDate().toString()
-            rows.push({
-              docId: doc.id,
-              timeStamp: timeStamp,
-              title: doc.data().title,
-              resources: resources
-            })
+      console.log("useEffect");
+      db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
+        console.log("snapshot");
+          let rows = []
+        dataEntries.forEach(doc => {
+          let resources = []
+          console.log(doc.id)
+          db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
+              console.log("getting resources");
+              resourceDocs.forEach(doc => {
+                console.log("found resource");  
+                resources.push({
+                      resourceId: doc.id,
+                      description: doc.data().description,
+                      title: doc.data().title,
+                      url: doc.data().url
+                  })
+              })
+          }); // db collect resources
+          const timeStamp = doc.data().datetime.toDate().toString()
+          rows.push({
+            docId: doc.id,
+            timeStamp: timeStamp,
+            title: doc.data().title,
+            resources: resources
           })
-          console.log(rows);
-          setTopics(rows);
-        });
-      }, []); // run use effect only once
+        }); // data entries for each
+        console.log("rows", rows);
+        setTopics(rows);
+        console.log(topics);
+        console.log("topic set");
+      }); // db collect topics
+    }, []); // run use effect only once
 
     return(
         <div>
