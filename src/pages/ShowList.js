@@ -25,7 +25,7 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 
 function newTopic(title, docId){
-    db.collection("test1").doc(docId).collection("topics").add({
+    db.collection(`test1/${docId}/topics`).add({
       datetime: new Date(),
       title: title
     })
@@ -100,7 +100,7 @@ function ShowList(props){
 
     useEffect(() => {
       console.log("useEffect");
-      db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
+      db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
         console.log("snapshot");
           let rows = []
         dataEntries.forEach(doc => {
