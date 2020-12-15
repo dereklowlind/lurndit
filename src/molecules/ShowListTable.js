@@ -1,7 +1,28 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Button  } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 function ShowtopicTable(props){
+    useEffect(() => {
+        console.log("useEffect");
+        props.topics.map((topic) => {
+            let resources = []
+            console.log(topic.docId)
+            props.db.collection("test1").doc(props.id).collection("topics").doc(topic.docId).collection("resources").onSnapshot((resourceDocs) => {
+                console.log("getting resources");
+                resourceDocs.forEach(doc => {
+                  console.log("found resource");  
+                  resources.push({
+                        resourceId: doc.id,
+                        description: doc.data().description,
+                        title: doc.data().title,
+                        url: doc.data().url
+                    })
+                })
+            }); // db collect resources
+            topic.resources = resources;
+          }); // data entries for each
+      }, []); // run use effect only once
+    
     console.log("in showtopictable", props.topics);
     if(props.topics == []){
         return <div>No topics found</div>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore';
 import {Button} from '@material-ui/core'
@@ -63,32 +63,67 @@ function ShowList(props){
     //   });
     // }, []); // run use effect only once
 
+    // useEffect(() => {
+    //   console.log("useEffect");
+    //   db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
+    //     console.log("snapshot");
+    //       let rows = []
+    //     dataEntries.forEach(doc => {
+    //       let resources = []
+    //       console.log(doc.id)
+    //       db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
+    //           console.log("getting resources");
+    //           resourceDocs.forEach(doc => {
+    //             console.log("found resource");  
+    //             resources.push({
+    //                   resourceId: doc.id,
+    //                   description: doc.data().description,
+    //                   title: doc.data().title,
+    //                   url: doc.data().url
+    //               })
+    //           })
+    //       }); // db collect resources
+    //       const timeStamp = doc.data().datetime.toDate().toString()
+    //       rows.push({
+    //         docId: doc.id,
+    //         timeStamp: timeStamp,
+    //         title: doc.data().title,
+    //         resources: resources
+    //       })
+    //     }); // data entries for each
+    //     console.log("rows", rows);
+    //     setTopics(rows);
+    //     console.log(topics);
+    //     console.log("topic set");
+    //   }); // db collect topics
+    // }, []); // run use effect only once
+
     useEffect(() => {
       console.log("useEffect");
       db.collection("test1").doc(props.id).collection("topics").onSnapshot((dataEntries) => {
         console.log("snapshot");
           let rows = []
         dataEntries.forEach(doc => {
-          let resources = []
-          console.log(doc.id)
-          db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
-              console.log("getting resources");
-              resourceDocs.forEach(doc => {
-                console.log("found resource");  
-                resources.push({
-                      resourceId: doc.id,
-                      description: doc.data().description,
-                      title: doc.data().title,
-                      url: doc.data().url
-                  })
-              })
-          }); // db collect resources
+          // let resources = []
+          // console.log(doc.id)
+          // db.collection("test1").doc(props.id).collection("topics").doc(doc.id).collection("resources").onSnapshot((resourceDocs) => {
+          //     console.log("getting resources");
+          //     resourceDocs.forEach(doc => {
+          //       console.log("found resource");  
+          //       resources.push({
+          //             resourceId: doc.id,
+          //             description: doc.data().description,
+          //             title: doc.data().title,
+          //             url: doc.data().url
+          //         })
+          //     })
+          // }); // db collect resources
           const timeStamp = doc.data().datetime.toDate().toString()
           rows.push({
             docId: doc.id,
             timeStamp: timeStamp,
             title: doc.data().title,
-            resources: resources
+            resources: []
           })
         }); // data entries for each
         console.log("rows", rows);
@@ -102,7 +137,7 @@ function ShowList(props){
         <div>
             <div>{props.id}</div>
             <Button onClick={() => newTopic("test topic", props.id)}>New Topic</Button>
-            <ShowListTable topics={topics} newResource={newResource} docId={props.id}/>
+            <ShowListTable db={db} topics={topics} newResource={newResource} docId={props.id}/>
         </div>
         
     )
