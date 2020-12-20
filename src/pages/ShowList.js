@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore';
-import {Button} from '@material-ui/core'
+import {Button, TextField} from '@material-ui/core'
 import ShowListTable from '../molecules/ShowListTable'
 
 // Initialize Firebase
@@ -58,6 +58,8 @@ function newTopic(title, docId){
 
 function ShowList(props){
     const [topics, setTopics] = useState([]);
+    const [topicTitle, setTopicTitle] = useState("");
+
     useEffect(() => {
       console.log("useEffect");
       db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
@@ -75,10 +77,20 @@ function ShowList(props){
       }); // db collect topics
     }, []); // run use effect only once
 
+    const handleSubmit = e => {
+      e.preventDefault();
+      newTopic(topicTitle, props.id);
+      setTopicTitle("");
+    }
+
     return(
         <div>
             <div>{props.id}</div>
-            <Button onClick={() => newTopic("test topic", props.id)}>New Topic</Button>
+            <form onSubmit={handleSubmit}>
+              <TextField value={topicTitle} onChange={(e) => setTopicTitle(e.target.value)}/>
+              <Button type='submit'>Add Topic</Button>
+            </form>
+            
             <ShowListTable db={db} topics={topics} newResource={newResource} docId={props.id}/>
         </div>
         
