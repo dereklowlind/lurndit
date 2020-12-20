@@ -52,7 +52,7 @@ function Mainpage(){
           title: doc.data().title,
         })
       })
-      console.log(rows);
+      //console.log(rows);
       setLists(rows);
     });
   }, []); // run use effect only once

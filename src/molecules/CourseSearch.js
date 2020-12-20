@@ -5,7 +5,6 @@ import '../css/search.css'
 
 function CourseSearch(props) {
 
-    console.log(props.lists)
     const [searchTerm, setSearchTerm] = useState("")
 
     
@@ -14,40 +13,37 @@ function CourseSearch(props) {
         setSearchTerm(event.target.value)
     }
 
-    
+    var regex = new RegExp('^' + searchTerm.toLowerCase())
 
-    var regex = new RegExp('^' + searchTerm)
-
-    if (searchTerm == "") {
-        regex = /^.{0}$/
-    }
-    
-    var filteredIds = []
-    var filteredText = []
+    var filteredResults = []
 
     for(var i=0; i < props.lists.length; i++) {
-        const found = regex.test(props.lists[i].title)
-        if(found) {
-            filteredIds.push(props.lists[i].docId)
-            filteredText.push(props.lists[i].title)
+        var lower = props.lists[i].title.toLowerCase()
+        const foundLower = regex.test(lower)
+        if(foundLower) {
+            filteredResults.push([props.lists[i].docId, props.lists[i].title])
         }
 
-        if(filteredText.length == 9) {
+        if(filteredResults.length == 9) {
             break
         }
     }
 
-    var displayResults = filteredText.map((result, index) => {
+    filteredResults.sort(function(a, b){
+        return (a[1] < b[1]) ? -1 : 1
+    })
+
+    var displayResults = filteredResults.map((result, index) => {
         return (
             <Grid item xs={4} key={index}>
-                <Link to={'/list/' + filteredIds[index]}>
-                    <div className="searchResult">{result}</div>
+                <Link to={'/list/' + result[0]}>
+                    <div className="searchResult">{result[1]}</div>
                 </Link>
             </Grid>
         )
     })
     
-    var isEmpty = filteredText.length == 0
+    var isEmpty = filteredResults.length == 0
     
     return (
         <div className="searchCourseContainer">
