@@ -1,0 +1,12 @@
+.searchResultContainer {
+    margin: auto;
+    width: 80%;
+    background-color: aliceblue;
+    min-height: 100px;
+}
+
+.searchResult {
+    background-color: white;
+    border-radius: 10px;
+    height: 50px;
+}

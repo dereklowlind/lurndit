@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import 'firebase/firestore'
 import {Button} from '@material-ui/core'
 import MainPageTable from '../molecules/MainPageTable'
+import CourseSearch from '../molecules/CourseSearch'
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -51,7 +52,7 @@ function Mainpage(){
           title: doc.data().title,
         })
       })
-      console.log(rows);
+      //console.log(rows);
       setLists(rows);
     });
   }, []); // run use effect only once
@@ -60,6 +61,7 @@ function Mainpage(){
         <div>
           <Button onClick={() => newList("test")}>New List</Button>
           <MainPageTable lists={lists} />
+          <CourseSearch lists={lists} />
         </div>
     )
 }
