@@ -9,7 +9,6 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          
           <Route path="/list/:id" render={({ match }) => <Showlist id={match.params.id} />} /> 
           <Route path="/" component={Mainpage} />
         </Switch>
