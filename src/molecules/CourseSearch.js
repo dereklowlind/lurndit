@@ -13,12 +13,12 @@ function CourseSearch(props) {
         setSearchTerm(event.target.value)
     }
 
-    var regex = new RegExp('^' + searchTerm.toLowerCase())
+    var regex = new RegExp('^' + searchTerm.toLowerCase().split(" ").join(""))
 
     var filteredResults = []
 
     for(var i=0; i < props.lists.length; i++) {
-        var lower = props.lists[i].title.toLowerCase()
+        var lower = props.lists[i].title.toLowerCase().split(" ").join("")
         const foundLower = regex.test(lower)
         if(foundLower) {
             filteredResults.push([props.lists[i].docId, props.lists[i].title])
