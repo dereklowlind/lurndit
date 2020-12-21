@@ -36,7 +36,7 @@ function CourseSearch(props) {
     var displayResults = filteredResults.map((result, index) => {
         return (
             <Grid item xs={4} key={index}>
-                <Link to={'/list/' + result[0]}>
+                <Link to={'/course/' + result[0]}>
                     <div className="searchResult">{result[1]}</div>
                 </Link>
             </Grid>
