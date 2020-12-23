@@ -55,11 +55,16 @@ function newTopic(title, docId){
   
 
 function ShowList(props){
+    const [courseTitle, setCourseTitle] = useState("");
     const [topics, setTopics] = useState([]);
     const [topicTitle, setTopicTitle] = useState("");
 
     useEffect(() => {
       console.log("useEffect");
+      db.collection(`test1`).doc(props.id).get().then((doc) => {
+        setCourseTitle(doc.data().title);
+    }); // db get course title
+      
       db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
           let rows = []
         dataEntries.forEach(doc => {
@@ -83,7 +88,7 @@ function ShowList(props){
 
     return(
         <div>
-            <div>{props.id}</div>
+            <div>{courseTitle}  {props.id}</div>
             <form onSubmit={handleSubmit}>
               <TextField value={topicTitle} onChange={(e) => setTopicTitle(e.target.value)}/>
               <Button type='submit'>Add Topic</Button>
