@@ -4,6 +4,9 @@ import {
     Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, 
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { Link } from 'react-router-dom'
+
+
 function ShowtopicTable(props){  
     const [open, setOpen] = useState(false); 
     const [resourceTitle, setResourceTitle] = useState("");
@@ -19,6 +22,11 @@ function ShowtopicTable(props){
         setResourceUrl("");
         setResourceTopicId("");
     }
+
+    const openInNewTab = (url) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+        if (newWindow) newWindow.opener = null
+      }
     
     // console.log("in showtopictable", props.topics);
     if(props.topics == []){
@@ -81,7 +89,6 @@ function ShowtopicTable(props){
                 </AccordionSummary>
                 <AccordionDetails>
                     <div>
-                    {/* <Button onClick={() => props.newResource(props.docId, topic.docId, "test title", "test desc", "foobar.com")}>Add Content</Button> */}
                     <Button variant="outlined" color="primary" onClick={() => {
                         setOpen(true);
                         setResourceTopicId(topic.docId);
@@ -94,7 +101,7 @@ function ShowtopicTable(props){
                         <div key={resource.resourceId}>
                             <div>{resource.title}</div>
                             <div>{resource.description}</div>
-                            <div>{resource.url}</div>
+                            <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
                             <div>
                             </div>
                         </div>
