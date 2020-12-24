@@ -8,7 +8,7 @@ from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
-
+import '../css/mainpage.scss'
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
@@ -32,7 +32,9 @@ const db = firebase.firestore();
 
 
 function Mainpage(){
+
   let history = useHistory()
+
   //state
   const [lists, setLists] = useState([]);
   const [open, setOpen] = useState(false);
@@ -45,6 +47,7 @@ function Mainpage(){
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [recentTitle, setRecentTitle] = useState("")
   const [recentId, setRecentId] = useState("")
+
   //on component mount
   useEffect(() => {
     db.collection("test1").onSnapshot((dataEntries) => {
@@ -56,6 +59,7 @@ function Mainpage(){
         rows.push({
           docId: doc.id,
           title: doc.data().title,
+          subtitle: doc.data().description
         })
       })
       
@@ -198,17 +202,25 @@ function Mainpage(){
         <div className="mainPageContainer">
           {courseDialog}
           {submitSnack}
-          <div className="pageTitle">
-            Curated content that will help you study better.
+          <div className="titleSection">
+            <div className="pageTitleContainer">
+              <h1 className="pageTitle">
+                Curated content that will help you study better.
+              </h1>
+            </div>
           </div>
-          <Button 
-            variant="outlined"
-            color="primary" 
-            onClick={() => setOpen(true)}
-          >
-            Add Course +
-          </Button>
-          <CourseSearch lists={lists} />
+          <div className="commandSection">
+            <Button 
+              variant="outlined"
+              color="primary" 
+              onClick={() => setOpen(true)}
+            >
+              Add Course +
+            </Button>
+          </div>
+          <div className="courseSection">
+            <CourseSearch lists={lists} />
+          </div> 
         </div>
     )
 }

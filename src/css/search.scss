@@ -1,0 +1,59 @@
+$theFont: 'Montserrat', sans-serif;
+
+
+.searchResultContainer {
+    margin: auto;
+    width: 80%;
+    min-height: 100px;
+    padding: 20px;
+
+}
+
+.searchResult {
+    border-radius: 10px;
+    height: 90px;
+    width: 300px;
+    margin: 10px;
+    padding-top: -5px;
+    border: solid black 2px;
+    font-family: $theFont;
+}
+
+.searchResult:hover {
+    border-color: grey;
+    box-shadow: grey 2px 2px 4px 2px;
+}
+
+.searchBoxContainer {
+    width: 100%;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.searchText {
+    margin-top: 10px;
+    color: black;
+    text-align: left;
+    margin-left: 15px;
+}
+
+.searchTerm {
+    font-weight: 600;
+    font-size: 32px;
+}
+
+.searchDescription {
+    font-size: 16pt;
+}
+
+@media screen and (max-width: 400px) {
+   .searchBoxContainer {
+       width: 60%;
+   } 
+   .searchResult {
+       margin: auto;
+       width: 120px;
+       height: 60px;
+   }
+}

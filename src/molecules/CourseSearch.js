@@ -1,15 +1,34 @@
-import React, {useState} from 'react'
-import {Grid, Paper, Input} from '@material-ui/core'
+import React, {useEffect, useState} from 'react'
+import {Grid, Paper, Input, TextField} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
-import '../css/search.css'
+import '../css/search.scss'
 
+const useStyles = makeStyles((theme) => ({
+    searchTextArea: {
+        width: '750px'
+    },
+    textAreaFont: {
+        fontSize: '24pt',
+        fontFamily: "'Montserrat', sans-serif",
+        fontWeight: 600
+    }
+}))
 function CourseSearch(props) {
 
     const [searchTerm, setSearchTerm] = useState("")
+    const [isMobile, setMobile] = useState(window.innerWidth < 800)
 
+    const classes = useStyles()
+
+    useEffect(() => {
+        function handleResize() {
+            setMobile(window.innerWidth < 800)
+        }
+        window.addEventListener('resize', handleResize)
+    }, [])
     
     const updateSearch = (event) => {
-        console.log(event.target.value)
         setSearchTerm(event.target.value)
     }
 
@@ -17,14 +36,16 @@ function CourseSearch(props) {
 
     var filteredResults = []
 
+    const maxResults = (isMobile ? 10 : 9)
+
     for(var i=0; i < props.lists.length; i++) {
         var lower = props.lists[i].title.toLowerCase().split(" ").join("")
         const foundLower = regex.test(lower)
         if(foundLower) {
-            filteredResults.push([props.lists[i].docId, props.lists[i].title])
+            filteredResults.push([props.lists[i].docId, props.lists[i].title, props.lists[i].subtitle])
         }
 
-        if(filteredResults.length == 9) {
+        if(filteredResults.length == maxResults) {
             break
         }
     }
@@ -33,11 +54,26 @@ function CourseSearch(props) {
         return (a[1] < b[1]) ? -1 : 1
     })
 
+    const rowFraction = (isMobile ? 6 : 4)
+
+    const courseClick = (index) => {
+        console.log(index)
+    }
+
     var displayResults = filteredResults.map((result, index) => {
         return (
-            <Grid item xs={4} key={index}>
-                <Link to={'/course/' + result[0]}>
-                    <div className="searchResult">{result[1]}</div>
+            <Grid item xs={rowFraction} key={index}>
+                <Link to={'/course/' + result[0]} style={{ textDecoration: 'none' }}>
+                    <div className="searchResult" onClick={()=>courseClick(index)}>
+                        <div className="searchText">
+                            <div className="searchTerm">
+                                {result[1]}
+                            </div>
+                            <div className="searchDescription">
+                                {result[2]}
+                            </div>
+                        </div>    
+                    </div>
                 </Link>
             </Grid>
         )
@@ -48,7 +84,15 @@ function CourseSearch(props) {
     return (
         <div className="searchCourseContainer">
             <div className="searchBoxContainer">
-                <Input onChange={updateSearch} placeholder="Search for courses..." type='text'/>
+                <TextField 
+                    className={classes.searchTextArea} 
+                    InputProps={{
+                        classes: {
+                          input: classes.textAreaFont
+                        }
+                    }}
+                    onChange={updateSearch} 
+                    placeholder="Search for courses..." type='text'/>
             </div>
             <div className="searchResultContainer">
                 {isEmpty ? 

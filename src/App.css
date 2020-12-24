@@ -28,11 +28,22 @@
   color: #61dafb;
 }
 
+.pageContainer {
+  margin-left: 260px;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pageContainer {
+    margin-left: 0;
   }
 }
