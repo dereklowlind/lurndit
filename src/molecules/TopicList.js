@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -44,6 +45,10 @@ function TopicList(props){
     const setTopic = (index) => {
         props.switchTopic(index)
     }
+    const openInNewTab = (url) => {
+        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+        if (newWindow) newWindow.opener = null
+      }
     // console.log("in showtopictable", props.topics);
     if(props.topics == []){
         return <div>No topics found</div>
@@ -118,7 +123,8 @@ function TopicList(props){
                             <div key={resource.resourceId}>
                                 <div>{resource.title}</div>
                                 <div>{resource.description}</div>
-                                <div>{resource.url}</div>
+                                {/* <div>{resource.url}</div> */}
+                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
                                 <div>
                                 </div>
                             </div>
