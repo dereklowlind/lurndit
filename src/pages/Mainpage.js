@@ -9,30 +9,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
 import '../css/mainpage.scss'
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
-  authDomain: "test-lurndit.firebaseapp.com",
-  databaseURL: "https://test-lurndit.firebaseio.com",
-  projectId: "test-lurndit",
-  storageBucket: "test-lurndit.appspot.com",
-  messagingSenderId: "571339658382",
-  appId: "1:571339658382:web:6c18a6978988089f41e5df",
-  measurementId: "G-Z2K9NQHKSW"
-};
 
-
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-const db = firebase.firestore();
-
-
-
-function Mainpage(){
-
+function Mainpage(props){
+  const db = props.db;
   let history = useHistory()
 
   //state

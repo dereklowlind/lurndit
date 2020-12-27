@@ -53,7 +53,7 @@ function TopicList(props){
 
     const handleAdd = () => {
         setOpen(false);
-        props.newResource(props.docId, resourceTopicId, resourceTitle, resourceDesc, resourceUrl);
+        props.newResource(props.db, props.docId, resourceTopicId, resourceTitle, resourceDesc, resourceUrl);
         setResourceTitle("");
         setResourceDesc("");
         setResourceUrl("");

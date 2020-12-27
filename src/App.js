@@ -4,7 +4,26 @@ import CoursePage from './pages/CoursePage'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
+import firebase from 'firebase'
+import 'firebase/firestore';
 
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
+  authDomain: "test-lurndit.firebaseapp.com",
+  databaseURL: "https://test-lurndit.firebaseio.com",
+  projectId: "test-lurndit",
+  storageBucket: "test-lurndit.appspot.com",
+  messagingSenderId: "571339658382",
+  appId: "1:571339658382:web:6c18a6978988089f41e5df",
+  measurementId: "G-Z2K9NQHKSW"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const db = firebase.firestore();
 
 function App() {
   return (
@@ -18,8 +37,8 @@ function App() {
         <Router>
         <DrawerMenu />
           <Switch>
-            <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} />} /> 
-            <Route path="/" component={Mainpage} />
+            <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} db={db}/>} /> 
+            <Route path="/" render={(props) => (<Mainpage db={db}/>)}/>
           </Switch>
           
         </Router>

@@ -6,24 +6,6 @@ import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
 import '../css/coursepage.scss'
 
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
-  authDomain: "test-lurndit.firebaseapp.com",
-  databaseURL: "https://test-lurndit.firebaseio.com",
-  projectId: "test-lurndit",
-  storageBucket: "test-lurndit.appspot.com",
-  messagingSenderId: "571339658382",
-  appId: "1:571339658382:web:6c18a6978988089f41e5df",
-  measurementId: "G-Z2K9NQHKSW"
-};
-
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-const db = firebase.firestore();
-
 const useStyles = makeStyles((theme) => ({
   topicTextArea: {
     width: '400px',
@@ -36,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(title, docId){
+function newTopic(db, title, docId){
     db.collection(`test1/${docId}/topics`).add({
       datetime: new Date(),
       title: title,
@@ -50,7 +32,7 @@ function newTopic(title, docId){
     });
   }
 
-  function newResource(docId, topic, title, description, url){
+  function newResource(db, docId, topic, title, description, url){
     db.collection(`test1/${docId}/topics`).doc(topic).update({
       resources: firebase.firestore.FieldValue.arrayUnion({
         datetime: new Date(),
@@ -69,7 +51,7 @@ function newTopic(title, docId){
   
 
 function CoursePage(props){
-
+    const db = props.db;
     const [courseTitle, setCoursetitle] = useState("")
     const [courseSubtitle, setCourseSubtitle] = useState("")
     const [loading, setLoading] = useState(true)
@@ -110,7 +92,7 @@ function CoursePage(props){
 
     const handleSubmit = e => {
       e.preventDefault();
-      newTopic(topicTitle, props.id);
+      newTopic(db, topicTitle, props.id);
       setTopicTitle("");
     }
 
