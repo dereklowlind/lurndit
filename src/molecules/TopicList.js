@@ -21,6 +21,24 @@ const useStyles = makeStyles((theme) => ({
     },
     expanded:{
         marginTop:'30px'
+    },
+    details:{
+        display: "block",
+        textAlign: "left"
+    },
+    resourceTitle:{
+        fontFamily: 'Circular Std',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        fontSize: '32px',
+        lineHeight: '41px'
+    },
+    resourceDesc:{
+        fontFamily: 'Arial',
+        fontStyle: 'normal',
+        fontWeight: 'normal',
+        fontSize: '30px',
+        lineHeight: '23px'
     }
 }))
 
@@ -121,8 +139,8 @@ function TopicList(props){
                     </div>  
                         {topic.resources.map((resource) => (
                             <div key={resource.resourceId}>
-                                <div>{resource.title}</div>
-                                <div>{resource.description}</div>
+                                <div className={classes.resourceTitle}>{resource.title}</div>
+                                <div className={classes.resourceDesc}>{resource.description}</div>
                                 {/* <div>{resource.url}</div> */}
                                 <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
                                 <div>
