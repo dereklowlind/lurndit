@@ -2,8 +2,9 @@ import './App.css'
 import Mainpage from './pages/Mainpage'
 import CoursePage from './pages/CoursePage'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-import DrawerMenu from './molecules/drawerMenu'
+import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
+
 
 function App() {
   return (

@@ -4,7 +4,7 @@ import {Button, Drawer, TextField, Hidden} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home';
 import '../css/drawer.scss'
 import { useHistory } from 'react-router-dom';
-
+import { Link } from 'react-router-dom'
 const drawerWidth = 260
 
 const useStyles = makeStyles((theme) => ({
@@ -39,11 +39,12 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-    topButton: {
+    homeButton: {
       fontSize: '22px',
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: 600,
-      textTransform: "none"
+      textTransform: "none",
+      color: "black"
     }
 }));
 
@@ -61,9 +62,9 @@ function DrawerMenu() {
     };
     //drawer menu will fetch user settings on load
 
-    const goHome = () => {
-      history.push("/")
-    }
+    // const goHome = () => {
+    //   history.push("/")
+    // }
 
     return (
         <nav className={classes.drawer} aria-label="topic-container">
@@ -92,17 +93,17 @@ function DrawerMenu() {
                     open
                 >
                     <div className="drawerHeader">
-                        <div className="drawerTitle">
+                        <Link to="/" className="drawerTitle">
                             Lurndit
-                        </div>
+                        </Link>
                     </div>
                     
                     <div className="drawerContent">
-                      <div className="topButtons">
-                        <Button className={classes.topButton} onClick={goHome}>
+                      <div className="homeButtons">
+                        <Link className={classes.homeButton} to="/">
                           <HomeIcon style={{marginLeft: '-10px', marginRight: '10px'}}/>
                           Home
-                        </Button>
+                        </Link>
                       </div>
                     </div>
 
