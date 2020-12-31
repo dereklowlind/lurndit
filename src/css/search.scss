@@ -11,17 +11,18 @@ $theFont: 'Montserrat', sans-serif;
 
 .searchResult {
     border-radius: 10px;
-    height: 90px;
-    // width: 300px;
+    height: 70px;
+    width: 250px;
     margin: 10px;
     padding-top: -5px;
-    border: solid black 2px;
+    border: solid #e6e6e66e 2px;
     font-family: $theFont;
+    box-shadow: 2px 4.6px 9.6px rgba(0, 0, 0, 0.17);
 }
 
 .searchResult:hover {
-    border-color: grey;
-    box-shadow: grey 2px 2px 4px 2px;
+    background-color: #dedede;
+    transition: 0.4s;
 }
 
 .searchBoxContainer {
@@ -40,11 +41,11 @@ $theFont: 'Montserrat', sans-serif;
 
 .searchTerm {
     font-weight: 600;
-    font-size: 32px;
+    font-size: 23px;
 }
 
 .searchDescription {
-    font-size: 16pt;
+    font-size: 14pt;
 }
 
 @media screen and (max-width: 400px) {

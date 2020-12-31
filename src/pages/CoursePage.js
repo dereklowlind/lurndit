@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '16pt',
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600
-  }
+  },
 }))
 
 function newTopic(db, title, docId){

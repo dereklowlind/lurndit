@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '24pt',
         fontFamily: "'Montserrat', sans-serif",
         fontWeight: 600
-    }
+    },
+    
 }))
 function CourseSearch(props) {
 
