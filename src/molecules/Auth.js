@@ -65,7 +65,7 @@ function Auth() {
     }
     return (
       <div>
-        <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
+        {/* <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p> */}
         <Button onClick={() => firebase.auth().signOut()}>Sign-out</Button>
       </div>
     );
