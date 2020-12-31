@@ -49,6 +49,22 @@ function newTopic(db, title, docId){
     });
   }
   
+  function addToFavList(db, courseId, courseTitle){
+    // db.collection(`testUserList/${firebase.auth().currentUser.uid}`).doc(favList).update({
+    db.collection(`testUserList/${firebase.auth().currentUser.uid}/favList`).update({
+      favourites: firebase.firestore.FieldValue.arrayUnion({
+        datetime: new Date(),
+        courseId: courseId,
+        courseTitle: courseTitle
+      })
+    })
+    .then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+  }
 
 function CoursePage(props){
     const db = props.db;
