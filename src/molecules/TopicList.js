@@ -30,15 +30,13 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Circular Std',
         fontStyle: 'normal',
         fontWeight: 'bold',
-        fontSize: '32px',
-        lineHeight: '41px'
+        fontSize: '25px'
     },
     resourceDesc:{
         fontFamily: 'Arial',
         fontStyle: 'normal',
         fontWeight: 'normal',
-        fontSize: '30px',
-        lineHeight: '23px'
+        fontSize: '20px'
     }
 }))
 
