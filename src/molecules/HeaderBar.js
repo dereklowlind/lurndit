@@ -21,7 +21,7 @@ function HeaderBar(props) {
     <div className={classes.headerContainer}>
         <TopSearchBar courseList={props.lists} triggerRender={props.triggerRender}/>
         <div className={classes.authContainer}>
-            <Auth />
+            <Auth db={props.db} setFavList={props.setFavList}/>
         </div>
     </div>
     )
