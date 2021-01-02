@@ -72,10 +72,10 @@ function TopicList(props){
     return(
         <div>
         <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add Content</DialogTitle>
+            <DialogTitle id="form-dialog-title">Add Resource</DialogTitle>
             <DialogContent>
             <DialogContentText>
-                Please enter the new content below
+                Please enter the new resource below
             </DialogContentText>
             <TextField
                 autoFocus
@@ -132,7 +132,7 @@ function TopicList(props){
                         setOpen(true);
                         setResourceTopicId(topic.docId);
                     }}>
-                        Add Content
+                        Add Resource
                     </Button>
                     </div>  
                         {topic.resources.map((resource) => (
