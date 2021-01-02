@@ -8,13 +8,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function HeaderBar() {
+function HeaderBar(props) {
     const classes = useStyles();
 
     return(
     <div className={classes.headerContainer}>
         <div>Search bar goes here</div>
-        <Auth />
+        <Auth db={props.db} setFavList={props.setFavList}/>
     </div>
     )
 }
