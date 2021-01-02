@@ -30,6 +30,7 @@ const db = firebase.firestore();
 
 
 function App() {
+  const [favList, setFavList] = useState([]);
   return (
     <div className="App">
       <Helmet>
@@ -37,10 +38,10 @@ function App() {
         <link rel="preconnect" href="https://fonts.gstatic.com"/>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
-      <HeaderBar />
+      <HeaderBar db={db} setFavList={setFavList}/>
       <div className="pageContainer">
         <Router>
-        <DrawerMenu />
+        <DrawerMenu favList={favList}/>
           <Switch>
             <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} db={db}/>} /> 
             <Route path="/" render={(props) => (<Mainpage db={db}/>)}/>

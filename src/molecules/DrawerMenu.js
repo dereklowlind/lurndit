@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function DrawerMenu() {
+function DrawerMenu(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -104,6 +104,16 @@ function DrawerMenu() {
                           <HomeIcon style={{marginLeft: '-10px', marginRight: '10px'}}/>
                           Home
                         </Link>
+                      </div>
+                      <div>
+                        <div>Favourite List</div>
+                        {props.favList.map((c, index) => (
+                          <div key={c.courseId}>
+                            <Link to={`/course/${c.courseId}`}>
+                                {c.courseTitle}
+                            </Link>
+                          </div>
+                        ))}
                       </div>
                     </div>
 
