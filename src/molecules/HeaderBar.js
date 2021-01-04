@@ -6,6 +6,11 @@ const useStyles = makeStyles((theme) => ({
     headerContainer: {
         display: 'flex',
         justifyContent: 'flex-end'
+    },
+    authContainer: {
+        marginTop: '16px',
+        marginLeft: '10px',
+        marginRight: '10px'
     }
 }))
 
@@ -15,7 +20,9 @@ function HeaderBar(props) {
     return(
     <div className={classes.headerContainer}>
         <TopSearchBar courseList={props.lists} triggerRender={props.triggerRender}/>
-        <Auth />
+        <div className={classes.authContainer}>
+            <Auth />
+        </div>
     </div>
     )
 }
