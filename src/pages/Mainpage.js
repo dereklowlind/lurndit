@@ -15,7 +15,7 @@ function Mainpage(props){
   let history = useHistory()
 
   //state
-  const [lists, setLists] = useState([]);
+  //const [lists, setLists] = useState([]);
   const [open, setOpen] = useState(false);
   const [courseTitle, setCourseTitle] = useState("")
   const [courseSubject, setCourseSubject] = useState("")
@@ -23,31 +23,35 @@ function Mainpage(props){
   const [university, setUniversity] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
-  const [recentTitle, setRecentTitle] = useState("")
-  const [recentId, setRecentId] = useState("")
+  //const [submitSuccess, setSubmitSuccess] = useState(false)
+  // const [recentTitle, setRecentTitle] = useState("")
+  // const [recentId, setRecentId] = useState("")
 
-  //on component mount
-  useEffect(() => {
-    db.collection("test1").onSnapshot((dataEntries) => {
-      let rows = []
-      dataEntries.forEach(doc => {
-        if(doc.data().title == recentTitle) {
-          setRecentId(doc.id)
-        }
-        rows.push({
-          docId: doc.id,
-          title: doc.data().title,
-          subtitle: doc.data().description
-        })
-      })
+  // //on component mount
+  // useEffect(() => {
+  //   db.collection("test1").onSnapshot((dataEntries) => {
+  //     let rows = []
+  //     dataEntries.forEach(doc => {
+  //       if(doc.data().title == undefined) {
+  //         return
+  //       }
+  //       if(doc.data().title == recentTitle) {
+  //         setRecentId(doc.id)
+  //       }
+  //       rows.push({
+  //         docId: doc.id,
+  //         title: doc.data().title,
+  //         subtitle: doc.data().description
+  //       })
+  //     })
       
-      rows.sort(function(a, b) {
-        return (a.title < b.title) ? -1 : 1
-      })
-      setLists(rows);
-    });
-  }, [submitSuccess]); 
+  //     rows.sort(function(a, b) {
+  //       return (a.title < b.title) ? -1 : 1
+  //     })
+  //     setLists(rows);
+  //     console.log(rows)
+  //   });
+  // }, [submitSuccess]); 
   // run use effect only once and when we course is created so we can immediately access our course in search
 
   //request functions
@@ -61,14 +65,14 @@ function Mainpage(props){
       subject: courseSubject
     })
     .then(function() {
-      setRecentTitle(courseCode)
+      props.setRecentTitle(courseCode)
       setCourseTitle("");
       setCourseSubject("");
       setUniversity("");
       setCourseCode("");
       setOpen(false)
       setSubmitting(false)
-      setSubmitSuccess(true)
+      props.setSubmitSuccess(true)
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
@@ -81,11 +85,11 @@ function Mainpage(props){
     if (reason === 'clickaway') {
       return;
     }
-    setSubmitSuccess(false);
+    props.setSubmitSuccess(false);
   }
 
   const snackGo = () => {
-    history.push("/course/" + recentId)
+    history.push("/course/" + props.recentId)
     closeSnack()
   }
 
@@ -161,14 +165,14 @@ function Mainpage(props){
           vertical: 'bottom',
           horizontal: 'left',
         }}
-        open={submitSuccess}
+        open={props.submitSuccess}
         autoHideDuration={10000}
         onClose={closeSnack}
         message="Course Created!"
         action={
           <React.Fragment>
             <Button color="secondary" size="small" onClick={snackGo}>
-              {recentTitle}
+              {props.recentTitle}
             </Button>
             <IconButton size="small" aria-label="close" color="inherit" onClick={closeSnack}>
               <CloseIcon fontSize="small" />
@@ -198,7 +202,7 @@ function Mainpage(props){
             </Button>
           </div>
           <div className="courseSection">
-            <CourseSearch lists={lists} />
+            <CourseSearch lists={props.lists} />
           </div> 
         </div>
     )
