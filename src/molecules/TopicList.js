@@ -31,15 +31,13 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Circular Std',
         fontStyle: 'normal',
         fontWeight: 'bold',
-        fontSize: '32px',
-        lineHeight: '41px'
+        fontSize: '25px'
     },
     resourceDesc:{
         fontFamily: 'Arial',
         fontStyle: 'normal',
         fontWeight: 'normal',
-        fontSize: '30px',
-        lineHeight: '23px'
+        fontSize: '20px'
     }
 }))
 
@@ -125,10 +123,10 @@ function TopicList(props){
     return(
         <div>
         <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add Content</DialogTitle>
+            <DialogTitle id="form-dialog-title">Add Resource</DialogTitle>
             <DialogContent>
             <DialogContentText>
-                Please enter the new content below
+                Please enter the new resource below
             </DialogContentText>
             <TextField
                 autoFocus
