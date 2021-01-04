@@ -6,6 +6,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -60,6 +61,10 @@ function TopicList(props){
         setResourceTopicId("");
     }
     
+    const onDragEnd = (result) => {
+        props.onDragEnd(result)
+    }
+
     const setTopic = (index) => {
         props.switchTopic(index)
     }
@@ -71,6 +76,52 @@ function TopicList(props){
     if(props.topics == []){
         return <div>No topics found</div>
     }
+
+    function Topic({topic, index}) {
+        return(
+            <Draggable draggableId={topic.docId} index={index}>
+                {provided => (
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <Accordion key={topic.docId} className={classes.accordion}>
+                            <AccordionSummary 
+                                expandIcon={<ExpandMoreIcon style={{fill: "green"}}/>}
+                                id={topic.docId} 
+                                className={classes.accordianTitle}
+                            >
+                                {topic.title}
+                            </AccordionSummary>
+                            <AccordionDetails className={classes.details}>
+                                <div>
+                                <Button variant="outlined" color="primary" onClick={() => {
+                                    setOpen(true);
+                                    setResourceTopicId(topic.docId);
+                                }}>
+                                    Add Content
+                                </Button>
+                                </div>  
+                                {topic.resources.map((resource) => (
+                                        <div key={resource.resourceId}>
+                                            <div className={classes.resourceTitle}>{resource.title}</div>
+                                            <div className={classes.resourceDesc}>{resource.description}</div>
+                                            {/* <div>{resource.url}</div> */}
+                                            <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                            <div>
+                                            </div>
+                                        </div>
+                                ))}
+                            </AccordionDetails>
+                        </Accordion>
+                    </div>
+                )}
+            </Draggable>
+        )
+    }
+
+    const accordianList = props.topics.map((topic, index) => (
+        <Topic topic={topic} key={index} index={index}/>
+    ))
+    
+
     return(
         <div>
         <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
@@ -118,40 +169,17 @@ function TopicList(props){
             </Button>
             </DialogActions>
         </Dialog>
-        {props.topics.map((topic, index) => (
-            <div>
-            <Accordion key={topic.docId} className={classes.accordion}>
-                <AccordionSummary 
-                    expandIcon={<ExpandMoreIcon style={{fill: "green"}}/>}
-                    id={topic.docId} 
-                    className={classes.accordianTitle}
-                >
-                    {topic.title}
-                </AccordionSummary>
-                <AccordionDetails className={classes.details}>
-                    <div>
-                    <Button variant="outlined" color="primary" onClick={() => {
-                        setOpen(true);
-                        setResourceTopicId(topic.docId);
-                    }}>
-                        Add Content
-                    </Button>
-                    </div>  
-                        {topic.resources.map((resource) => (
-                            <div key={resource.resourceId}>
-                                <div className={classes.resourceTitle}>{resource.title}</div>
-                                <div className={classes.resourceDesc}>{resource.description}</div>
-                                {/* <div>{resource.url}</div> */}
-                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
-                                <div>
-                                </div>
-                            </div>
-                        ))}
-                </AccordionDetails>
-            </Accordion>
-            </div>
-            ))}
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="topiclist">
+                {provided => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {accordianList}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
         </div>
+
     )
 
 }

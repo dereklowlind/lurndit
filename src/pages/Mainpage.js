@@ -32,6 +32,9 @@ function Mainpage(props){
     db.collection("test1").onSnapshot((dataEntries) => {
       let rows = []
       dataEntries.forEach(doc => {
+        if(doc.data().title == undefined) {
+          return
+        }
         if(doc.data().title == recentTitle) {
           setRecentId(doc.id)
         }
@@ -46,6 +49,7 @@ function Mainpage(props){
         return (a.title < b.title) ? -1 : 1
       })
       setLists(rows);
+      console.log(rows)
     });
   }, [submitSuccess]); 
   // run use effect only once and when we course is created so we can immediately access our course in search
