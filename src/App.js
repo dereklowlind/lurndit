@@ -30,6 +30,7 @@ const db = firebase.firestore();
 
 function App() {
   const [favList, setFavList] = useState([]);
+<<<<<<< HEAD
   const [lists, setLists] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [recentTitle, setRecentTitle] = useState("")
@@ -67,6 +68,8 @@ function App() {
     setRouteTrigger(!routeTrigger)
   }
 
+=======
+>>>>>>> 122c6a987bf0196222f4e5a5de8c03d28dd547c3
   return (
     <div className="App">
       <Helmet>
@@ -74,6 +77,7 @@ function App() {
         <link rel="preconnect" href="https://fonts.gstatic.com"/>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
+<<<<<<< HEAD
       <Router>
         <HeaderBar lists={lists} triggerRender={triggerRender} db={db} setFavList={setFavList}/>
         <div className="pageContainer">
@@ -84,6 +88,19 @@ function App() {
             </Switch>
         </div>
       </Router>
+=======
+      <HeaderBar db={db} setFavList={setFavList}/>
+      <div className="pageContainer">
+        <Router>
+        <DrawerMenu favList={favList}/>
+          <Switch>
+            <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} db={db}/>} /> 
+            <Route path="/" render={(props) => (<Mainpage db={db}/>)}/>
+          </Switch>
+          
+        </Router>
+      </div>
+>>>>>>> 122c6a987bf0196222f4e5a5de8c03d28dd547c3
     </div>
   );
 }
