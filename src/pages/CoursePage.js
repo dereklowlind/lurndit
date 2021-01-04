@@ -234,7 +234,9 @@ function CoursePage(props){
                   }
                 }}
                 onChange={(e) => setTopicTitle(e.target.value)}/>
-              <Button variant="primary" type='submit'>Add Topic</Button>
+              <Button variant="outlined" type='submit'
+              style={{marginLeft: '10px'}}
+              >Add Topic</Button>
             </form>
           </div>
 
