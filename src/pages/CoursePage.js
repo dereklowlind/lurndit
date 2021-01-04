@@ -56,7 +56,6 @@ function newResource(db, docId, topic, title, description, url){
   });
 }
   
-<<<<<<< HEAD
 function addToFavList(db, courseId, courseTitle){
   db.collection('testUserList').doc(firebase.auth().currentUser.uid).set({
     favourites: firebase.firestore.FieldValue.arrayUnion({
@@ -101,19 +100,6 @@ function updatePositions(db, rows, id) {
       position: i
     }, {merge: true}).catch(function(error) {
       console.log("Error setting new positions.")
-=======
-  function addToFavList(db, courseId, courseTitle){
-    db.collection('testUserList').doc(firebase.auth().currentUser.uid).set({
-      favourites: firebase.firestore.FieldValue.arrayUnion({
-        datetime: new Date(),
-        courseId: courseId,
-        courseTitle: courseTitle
-      })
-    }, {merge: true})
-    .then(function() {
-      console.log("Document successfully written!");
-      alert("successfully added to favourites!")
->>>>>>> 122c6a987bf0196222f4e5a5de8c03d28dd547c3
     })
   }
 }
@@ -161,7 +147,6 @@ function CoursePage(props){
           setCourseSubtitle(docData.description)
         }
 
-<<<<<<< HEAD
         console.log(docData.useForcedOrder)
         var localForceOrdering = (docData.useForcedOrder!=undefined) ? true : false
 
@@ -189,21 +174,6 @@ function CoursePage(props){
         });  
       })
        // db collect topics
-=======
-      db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
-        let rows = []
-        dataEntries.forEach(doc => {
-          const timeStamp = doc.data().datetime.toDate().toString()
-          rows.push({
-            docId: doc.id,
-            timeStamp: timeStamp,
-            title: doc.data().title,
-            resources: doc.data().resources
-          })
-        }); // data entries for each
-        setTopics(rows);
-      }); // db collect topics
->>>>>>> 122c6a987bf0196222f4e5a5de8c03d28dd547c3
     }, [props.id]); // when id in link /courses/:id changes it causes a "reload" of the page
 
     const getContent = (id) => {
@@ -216,7 +186,6 @@ function CoursePage(props){
       setTopicTitle("");
     }
 
-<<<<<<< HEAD
     const reorder = (list, startIndex, endIndex) => {
       const result = Array.from(list)
       const [removed] = result.splice(startIndex, 1)
@@ -248,8 +217,6 @@ function CoursePage(props){
 
     }
 
-=======
->>>>>>> 122c6a987bf0196222f4e5a5de8c03d28dd547c3
     const handleAddToFavList = () => {
       if(firebase.auth().currentUser){ // check if uid is null
         addToFavList(db, props.id, courseTitle)
