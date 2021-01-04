@@ -34,8 +34,14 @@ function Auth(props) {
         setOpen(false);
         if(user){
           props.db.collection('testUserList').doc(user.uid).get().then(function(doc) {
-            console.log(doc.data().favourites)
-            props.setFavList(doc.data().favourites)
+            if (doc.data()!=undefined) {
+              if (doc.data().favourites!=undefined) {
+                console.log(doc.data().favourites)
+                props.setFavList(doc.data().favourites)
+              } else {
+                props.setFavList([])
+              }
+            }
           })
         }else{
           props.setFavList([]);
