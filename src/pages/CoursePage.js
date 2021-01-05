@@ -128,6 +128,7 @@ function CoursePage(props){
     const [topics, setTopics] = useState([]);
     const [topicTitle, setTopicTitle] = useState("");
     const [updated, setUpdated] = useState(false)
+    const [maxError, setMaxError] = useState(false)
 
     const classes = useStyles()
 
@@ -182,8 +183,14 @@ function CoursePage(props){
 
     const handleSubmit = e => {
       e.preventDefault();
+
+      if (topicTitle == "") {
+        setMaxError(true)
+        return
+      }
       newTopic(db, topicTitle, props.id, topics.length);
       setTopicTitle("");
+      setMaxError(false)
     }
 
     const reorder = (list, startIndex, endIndex) => {
@@ -242,6 +249,7 @@ function CoursePage(props){
             <form onSubmit={handleSubmit} className="courseButtons">
               <TextField 
                 placeholder="New Topic" 
+                error={maxError}
                 className={classes.topicTextArea} 
                 value={topicTitle} 
                 InputProps={{
@@ -249,7 +257,16 @@ function CoursePage(props){
                     input: classes.textAreaFont
                   }
                 }}
-                onChange={(e) => setTopicTitle(e.target.value)}/>
+                onChange={(e) => {
+                  if(e.target.value.length > 30) {
+                    setMaxError(true)
+                  } else if (maxError) {
+                    setMaxError(false)
+                    setTopicTitle(e.target.value)
+                  } else {
+                    setTopicTitle(e.target.value)
+                  }
+                }}/>
               <Button variant="outlined" type='submit'
               style={{marginLeft: '10px'}}
               >Add Topic</Button>
@@ -264,8 +281,6 @@ function CoursePage(props){
             switchTopic={getContent}
             onDragEnd={onDragEnd}
           />
-         
-
         </div>
         
     )
