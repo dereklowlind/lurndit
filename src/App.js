@@ -29,7 +29,7 @@ const db = firebase.firestore();
 
 
 function App() {
-
+  const [favList, setFavList] = useState([]);
   const [lists, setLists] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [recentTitle, setRecentTitle] = useState("")
@@ -75,9 +75,9 @@ function App() {
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
       <Router>
-        <HeaderBar lists={lists} triggerRender={triggerRender}/>
+        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} setFavList={setFavList}/>
         <div className="pageContainer">
-          <DrawerMenu />
+          <DrawerMenu favList={favList}/>
             <Switch>
               <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} db={db} key={window.location.pathname}/>} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} lists={lists} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId}/>)}/>

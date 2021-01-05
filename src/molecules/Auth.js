@@ -23,7 +23,7 @@ const uiConfig = {
   },
 };
 
-function Auth() {
+function Auth(props) {
     const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
     const [open, setOpen] = useState(false);
 
@@ -32,6 +32,20 @@ function Auth() {
       const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
         setIsSignedIn(!!user);
         setOpen(false);
+        if(user){
+          props.db.collection('testUserList').doc(user.uid).get().then(function(doc) {
+            if (doc.data()!=undefined) {
+              if (doc.data().favourites!=undefined) {
+                console.log(doc.data().favourites)
+                props.setFavList(doc.data().favourites)
+              } else {
+                props.setFavList([])
+              }
+            }
+          })
+        }else{
+          props.setFavList([]);
+        }
       });
       return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
     }, []);

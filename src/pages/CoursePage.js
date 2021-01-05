@@ -5,6 +5,7 @@ import {Button, Drawer, TextField} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
 import '../css/coursepage.scss'
+import StarBorderIcon from '@material-ui/icons/StarBorder'; // replace with rating from mui
 
 const useStyles = makeStyles((theme) => ({
   topicTextArea: {
@@ -16,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600
   },
+  favStarIcon: {
+    marginLeft: '5px',
+    color: '#ff6d75',
+  }
 }))
 
 function newTopic(db, title, docId, numTopics){
@@ -52,16 +57,16 @@ function newResource(db, docId, topic, title, description, url){
 }
   
 function addToFavList(db, courseId, courseTitle){
-  // db.collection(`testUserList/${firebase.auth().currentUser.uid}`).doc(favList).update({
-  db.collection(`testUserList/${firebase.auth().currentUser.uid}/favList`).update({
+  db.collection('testUserList').doc(firebase.auth().currentUser.uid).set({
     favourites: firebase.firestore.FieldValue.arrayUnion({
       datetime: new Date(),
       courseId: courseId,
       courseTitle: courseTitle
     })
-  })
+  }, {merge: true})
   .then(function() {
     console.log("Document successfully written!");
+    alert("successfully added to favourites!")
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
@@ -169,7 +174,7 @@ function CoursePage(props){
         });  
       })
        // db collect topics
-    }, []); // run use effect only once
+    }, [props.id]); // when id in link /courses/:id changes it causes a "reload" of the page
 
     const getContent = (id) => {
       console.log(id)
@@ -209,6 +214,15 @@ function CoursePage(props){
 
       //putting this function here breaks dnd, so maybe just let it end
       // updatePositions(props.db, rows, props.id)
+
+    }
+
+    const handleAddToFavList = () => {
+      if(firebase.auth().currentUser){ // check if uid is null
+        addToFavList(db, props.id, courseTitle)
+      }else{
+        alert("please sign in to add to favourites")
+      }
       
     }
 
@@ -217,6 +231,8 @@ function CoursePage(props){
           <div className="courseHeader">
             <div className="courseTitle">
               {courseTitle}
+              <StarBorderIcon className={classes.favStarIcon}/>
+              <Button onClick={handleAddToFavList}>Add to favourites</Button>
             </div>
             <div className="courseSubtitle">
               {courseSubtitle}
@@ -234,7 +250,9 @@ function CoursePage(props){
                   }
                 }}
                 onChange={(e) => setTopicTitle(e.target.value)}/>
-              <Button variant="primary" type='submit'>Add Topic</Button>
+              <Button variant="outlined" type='submit'
+              style={{marginLeft: '10px'}}
+              >Add Topic</Button>
             </form>
           </div>
 
