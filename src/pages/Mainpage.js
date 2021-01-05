@@ -10,6 +10,13 @@ import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
 import '../css/mainpage.scss'
 
+const errorMessages = [
+  "Fields cannot be empty.",
+  "Code cannot exceed 10 characters",
+  "Subject cannot exceed 10 characters",
+  "Title cannot exceed 20 characters."
+]
+
 function Mainpage(props){
   const db = props.db;
   let history = useHistory()
@@ -24,40 +31,12 @@ function Mainpage(props){
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
-  //const [submitSuccess, setSubmitSuccess] = useState(false)
-  // const [recentTitle, setRecentTitle] = useState("")
-  // const [recentId, setRecentId] = useState("")
-
-  // //on component mount
-  // useEffect(() => {
-  //   db.collection("test1").onSnapshot((dataEntries) => {
-  //     let rows = []
-  //     dataEntries.forEach(doc => {
-  //       if(doc.data().title == undefined) {
-  //         return
-  //       }
-  //       if(doc.data().title == recentTitle) {
-  //         setRecentId(doc.id)
-  //       }
-  //       rows.push({
-  //         docId: doc.id,
-  //         title: doc.data().title,
-  //         subtitle: doc.data().description
-  //       })
-  //     })
-      
-  //     rows.sort(function(a, b) {
-  //       return (a.title < b.title) ? -1 : 1
-  //     })
-  //     setLists(rows);
-  //     console.log(rows)
-  //   });
-  // }, [submitSuccess]); 
-  // run use effect only once and when we course is created so we can immediately access our course in search
+  const [showMessages, setShowMessages] = useState([false, false, false, false])
 
   //request functions
   const handleAdd = () => {
     setSubmitting(true)
+
     if (courseCode == "" || university== "" || courseTitle=="" || courseSubject=="") {
       const newEmpty = []
       if (courseCode == "") {
@@ -66,13 +45,13 @@ function Mainpage(props){
         newEmpty.push(false)
       }
 
-      if (courseTitle == "") {
+      if (courseSubject == "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
       }
 
-      if (courseSubject == "") {
+      if (courseTitle == "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
@@ -87,6 +66,7 @@ function Mainpage(props){
       setDialogEmpty(newEmpty)
       return
     }
+
     db.collection("test1").add({
       datetime: new Date(),
       title: courseCode,
