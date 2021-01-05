@@ -23,6 +23,7 @@ function Mainpage(props){
   const [university, setUniversity] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
+  const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
   //const [submitSuccess, setSubmitSuccess] = useState(false)
   // const [recentTitle, setRecentTitle] = useState("")
   // const [recentId, setRecentId] = useState("")
@@ -57,6 +58,35 @@ function Mainpage(props){
   //request functions
   const handleAdd = () => {
     setSubmitting(true)
+    if (courseCode == "" || university== "" || courseTitle=="" || courseSubject=="") {
+      const newEmpty = []
+      if (courseCode == "") {
+        newEmpty.push(true)
+      } else {
+        newEmpty.push(false)
+      }
+
+      if (courseTitle == "") {
+        newEmpty.push(true)
+      } else {
+        newEmpty.push(false)
+      }
+
+      if (courseSubject == "") {
+        newEmpty.push(true)
+      } else {
+        newEmpty.push(false)
+      }
+
+      if (university == "") {
+        newEmpty.push(true)
+      } else {
+        newEmpty.push(false)
+      }
+
+      setDialogEmpty(newEmpty)
+      return
+    }
     db.collection("test1").add({
       datetime: new Date(),
       title: courseCode,
@@ -104,6 +134,7 @@ function Mainpage(props){
         <TextField
           autoFocus
           margin="dense"
+          error={dialogEmpty[0]}
           id="code"
           label="Course Code"
           fullWidth
@@ -114,6 +145,7 @@ function Mainpage(props){
         {/* Should be autocomplete when we have a list of valid subjects */}
         <TextField
           margin="dense"
+          error={dialogEmpty[1]}
           id="subject"
           label="Course Subject"
           fullWidth
@@ -124,6 +156,7 @@ function Mainpage(props){
         <TextField
           margin="dense"
           id="title"
+          error={dialogEmpty[2]}
           label="Course Title"
           fullWidth
           value={courseTitle}
@@ -133,6 +166,7 @@ function Mainpage(props){
         <TextField
           margin="dense"
           id="university"
+          error={dialogEmpty[3]}
           label="University"
           fullWidth
           value={university}
@@ -143,6 +177,7 @@ function Mainpage(props){
       <DialogActions>
         <Button onClick={(e) => {
               setOpen(false);
+              setDialogEmpty([false, false, false, false])
               setCourseTitle("");
               setCourseSubject("");
               setUniversity("");
