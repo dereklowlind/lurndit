@@ -8,7 +8,9 @@ from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
+
 import '../css/mainpage.scss'
+
 
 const errorMessages = [
   "Fields cannot be empty.",
@@ -208,16 +210,30 @@ function Mainpage(props){
             </div>
           </div>
           <div className="commandSection">
-            <Button 
+            {!props.coursesLoading &&
+              <Button 
               variant="outlined"
               color="primary" 
               onClick={() => setOpen(true)}
-            >
-              Add Course +
-            </Button>
+              >
+                Add Course +
+              </Button>
+            }
+            
           </div>
           <div className="courseSection">
-            <CourseSearch lists={props.lists} />
+            {props.coursesLoading ? 
+            (
+              <div>
+                <CircularProgress size={60}/>
+              </div>
+            )
+            :
+            (
+              <CourseSearch lists={props.lists} />
+            )
+            }
+            
           </div> 
         </div>
     )

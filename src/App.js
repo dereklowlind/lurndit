@@ -35,6 +35,8 @@ function App() {
   const [recentTitle, setRecentTitle] = useState("")
   const [recentId, setRecentId] = useState("")
   const [routeTrigger, setRouteTrigger] = useState(false)
+  const [courseListLoading, setCourseListLoading] = useState(true)
+
 
   //on component mount
   useEffect(() => {
@@ -58,13 +60,16 @@ function App() {
         return (a.title < b.title) ? -1 : 1
       })
       setLists(rows);
-      console.log(rows)
+      setCourseListLoading(false)
     });
   }, [submitSuccess]);
 
   const triggerRender = () => {
-    console.log(routeTrigger)
     setRouteTrigger(!routeTrigger)
+  }
+
+  const updateFavList = (newTopic) => {
+
   }
 
   return (
@@ -79,8 +84,8 @@ function App() {
         <div className="pageContainer">
           <DrawerMenu favList={favList}/>
             <Switch>
-              <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} db={db} key={window.location.pathname}/>} /> 
-              <Route path="/" render={(props) => (<Mainpage db={db} lists={lists} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId}/>)}/>
+              <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList}/>} /> 
+              <Route path="/" render={(props) => (<Mainpage db={db} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId}/>)}/>
             </Switch>
         </div>
       </Router>

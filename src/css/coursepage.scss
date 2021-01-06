@@ -12,6 +12,10 @@ $theFont: 'Montserrat', sans-serif;
     margin-top: 50px;
 }
 
+.courseTitles {
+    display: inline-block;
+}
+
 .courseTitle {
     font-family: $theFont;
     font-weight: 700;
@@ -22,13 +26,22 @@ $theFont: 'Montserrat', sans-serif;
     font-family: $theFont;
     font-weight: 600;
     color: grey;
-    width: 211px;
+    display: inline-block;
 }
 
 .courseButtons {
     text-align: left;
     margin-left: 25px;
     margin-top: 25px;
+}
+
+.favouriteIndicator {
+   display: inline-block;
+   margin-left: 70px;
+}
+
+.loadingPage {
+    margin-top: 100px;
 }
 
 @media screen and (max-width: 600) {
