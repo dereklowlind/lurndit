@@ -9,9 +9,7 @@ import { Typography } from '@material-ui/core'
 function TopSearchBar(props){
     
     let history = useHistory()
-
-    console.log(props.courseList)
-
+    
     const handleSelection = (newVal) => {
         if (typeof newVal === "string") {
             return

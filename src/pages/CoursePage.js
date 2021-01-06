@@ -6,6 +6,9 @@ import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
 import '../css/coursepage.scss'
 import StarBorderIcon from '@material-ui/icons/StarBorder'; // replace with rating from mui
+import StarIcon from '@material-ui/icons/Star';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   topicTextArea: {
@@ -19,7 +22,14 @@ const useStyles = makeStyles((theme) => ({
   },
   favStarIcon: {
     marginLeft: '5px',
+    marginBottom:'-7px',
     color: '#ff6d75',
+  },
+  favButton: {
+    fontFamily: "'Montserrat', sans-serif",
+    fontWeight: 600,
+    color: 'gray'
+
   }
 }))
 
@@ -56,21 +66,45 @@ function newResource(db, docId, topic, title, description, url){
   });
 }
   
-function addToFavList(db, courseId, courseTitle){
-  db.collection('testUserList').doc(firebase.auth().currentUser.uid).set({
-    favourites: firebase.firestore.FieldValue.arrayUnion({
+function addToFavList(db, courseId, courseTitle, props){
+
+  db.collection(`testUserList`).doc(firebase.auth().currentUser.uid).collection('favouritesList').add({
+    courseId: props.id,
+    courseTitle: courseTitle,
+    datetime: new Date()
+  })
+  .then(function() {
+    const newList = [...props.favList]
+    const insert = {
       datetime: new Date(),
       courseId: courseId,
       courseTitle: courseTitle
-    })
-  }, {merge: true})
-  .then(function() {
+    }
+    newList.push(insert)
+    props.setFavList(newList)
     console.log("Document successfully written!");
-    alert("successfully added to favourites!")
   })
   .catch(function(error) {
       console.error("Error adding document: ", error);
   });
+}
+
+function removeFromFavList(db, courseTitle, props) {
+
+  //delete from db, needs error handling
+  var deleteCourseQuery = db.collection(`testUserList/${firebase.auth().currentUser.uid}/favouritesList`).where('courseId', '==', props.id)
+  
+  deleteCourseQuery.get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+      doc.ref.delete()
+    })
+  })
+
+  //delete locally without having to reload the page
+  var newList = [...props.favList]
+  newList = newList.filter(element => element.courseId!=props.id)
+  props.setFavList(newList)
+
 }
 
 function sortDate(list) {
@@ -129,6 +163,7 @@ function CoursePage(props){
     const [topicTitle, setTopicTitle] = useState("");
     const [updated, setUpdated] = useState(false)
     const [maxError, setMaxError] = useState(false)
+    const [favorite, setFavorite] = useState(false)
 
     const classes = useStyles()
 
@@ -138,10 +173,20 @@ function CoursePage(props){
     }, [updated])
 
     useEffect(() => {
-      console.log("useEffect");
+      if (!favorite) {
+        if (props.favList.length > 0) {
+          for(var i = 0; i < props.favList.length; i++) {
+            if (props.favList[i].courseId == props.id) {
+              setFavorite(true)
+              break
+            }
+          }
+        }
+      }
+    }, [props.favList])
 
+    useEffect(() => {      
       db.collection('test1').doc(props.id).get().then(function(doc) {
-        console.log(doc.data())
         const docData = doc.data()
         setCoursetitle(docData.title)
         if(docData.description) {
@@ -172,6 +217,7 @@ function CoursePage(props){
           }
           
           setTopics(rows);
+          setLoading(false);
         });  
       })
        // db collect topics
@@ -226,25 +272,65 @@ function CoursePage(props){
 
     const handleAddToFavList = () => {
       if(firebase.auth().currentUser){ // check if uid is null
-        addToFavList(db, props.id, courseTitle)
+        if(favorite) {
+          alert("Already in favorites list!")
+        } else {
+          addToFavList(db, props.id, courseTitle, props)
+        }
       }else{
         alert("please sign in to add to favourites")
+      } 
+    }
+
+    const handleRemoveFromFavList = () => {
+      if(firebase.auth().currentUser) {
+        if (favorite) {
+          removeFromFavList(db, courseTitle, props)
+          setFavorite(false)
+        } else {
+          alert("this is not a favorite")
+        }
       }
-      
     }
 
     return(
-        <div className="coursePage">
-          <div className="courseHeader">
-            <div className="courseTitle">
-              {courseTitle}
-              <StarBorderIcon className={classes.favStarIcon}/>
-              <Button onClick={handleAddToFavList}>Add to favourites</Button>
-            </div>
-            <div className="courseSubtitle">
-              {courseSubtitle}
-            </div>
+      <div>
+      {(loading==true) ?
+        (
+          <div className="loadingPage">
+            <CircularProgress/>
           </div>
+        )
+        :
+        (
+          <div className="coursePage">
+            <div className="courseHeader">
+              <div className="courseTitles">
+                <div className="courseTitle">
+                  {courseTitle}
+                </div>
+                <div className="courseSubtitle">
+                  {courseSubtitle}
+                </div>
+              </div>
+
+              {firebase.auth().currentUser!=null && 
+                ( !favorite ?
+                  (<div className="favouriteIndicator">
+                    <StarBorderIcon className={classes.favStarIcon}/>
+                    <Button className={classes.favButton} onClick={handleAddToFavList}>Add to favourites</Button>
+                  </div>)
+                  :
+                  (
+                    <div className="favouriteIndicator">
+                      <StarIcon className={classes.favStarIcon}/>
+                      <Button className={classes.favButton} onClick={handleRemoveFromFavList}>Remove from favourites</Button>
+                    </div>
+                  )
+                )
+              }
+              
+            </div>
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
               <TextField 
@@ -282,8 +368,11 @@ function CoursePage(props){
             onDragEnd={onDragEnd}
           />
         </div>
-        
+        )
+      }
+      </div>    
     )
 }
+
 
 export default CoursePage

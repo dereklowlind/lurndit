@@ -33,15 +33,12 @@ function Auth(props) {
         setIsSignedIn(!!user);
         setOpen(false);
         if(user){
-          props.db.collection('testUserList').doc(user.uid).get().then(function(doc) {
-            if (doc.data()!=undefined) {
-              if (doc.data().favourites!=undefined) {
-                console.log(doc.data().favourites)
-                props.setFavList(doc.data().favourites)
-              } else {
-                props.setFavList([])
-              }
-            }
+          props.db.collection(`testUserList/${user.uid}/favouritesList`).get().then(function(querySnapshot) {
+            const newList = []
+            querySnapshot.forEach(doc => {
+              newList.push(doc.data())
+            });
+            props.setFavList(newList)
           })
         }else{
           props.setFavList([]);
