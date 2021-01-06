@@ -87,7 +87,7 @@ function TopicList(props){
                                 id={topic.docId} 
                                 className={classes.accordianTitle}
                             >
-                                <DragIndicatorIcon fontSize="inherit"/>
+                                <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
                                 {topic.title}
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
