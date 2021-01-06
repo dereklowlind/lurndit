@@ -44,7 +44,27 @@ const useStyles = makeStyles((theme) => ({
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: 600,
       textTransform: "none",
-      color: "black"
+      color: "black",
+      textDecoration: "none"
+    },
+    favListButton: {
+      fontSize: '18px',
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: 600,
+      textTransform: "none",
+      color: "black",
+      marginLeft: "10px",
+      textDecoration: "none"
+      
+    },
+    favListHeader: {
+      fontSize: '22px',
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: 600,
+      textTransform: "none",
+      color: "black",
+      marginTop: '5px',
+      textDecoration: "underline"
     }
 }));
 
@@ -106,10 +126,10 @@ function DrawerMenu(props) {
                         </Link>
                       </div>
                       <div>
-                        <div>Favourite List</div>
+                        <div className={classes.favListHeader}>Favourites List</div>
                         {props.favList.map((c, index) => (
                           <div key={c.courseId}>
-                            <Link to={`/course/${c.courseId}`}>
+                            <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
                                 {c.courseTitle}
                             </Link>
                           </div>
