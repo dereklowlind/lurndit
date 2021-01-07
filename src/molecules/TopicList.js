@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
 import { 
     Accordion, AccordionSummary, AccordionDetails, Button, TextField,
-    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Drawer, 
+    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import {makeStyles, useTheme} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -65,15 +65,12 @@ function TopicList(props){
         props.onDragEnd(result)
     }
 
-    const setTopic = (index) => {
-        props.switchTopic(index)
-    }
     const openInNewTab = (url) => {
         const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
         if (newWindow) newWindow.opener = null
       }
     // console.log("in showtopictable", props.topics);
-    if(props.topics == []){
+    if(props.topics === []){
         return <div>No topics found</div>
     }
 

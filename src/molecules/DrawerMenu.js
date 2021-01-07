@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
-import {Button, Drawer, TextField, Hidden} from '@material-ui/core'
+import {Drawer, Hidden} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home';
 import '../css/drawer.scss'
-import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 const drawerWidth = 260
 
@@ -74,8 +73,6 @@ function DrawerMenu(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = useState(false);
-
-    const history = useHistory();
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);

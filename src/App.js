@@ -43,10 +43,10 @@ function App() {
     db.collection("test1").onSnapshot((dataEntries) => {
       let rows = []
       dataEntries.forEach(doc => {
-        if(doc.data().title == undefined) {
+        if(doc.data().title === undefined) {
           return
         }
-        if(doc.data().title == recentTitle) {
+        if(doc.data().title === recentTitle) {
           setRecentId(doc.id)
         }
         rows.push({
