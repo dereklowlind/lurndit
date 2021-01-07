@@ -4,10 +4,11 @@ import 'firebase/firestore';
 import {Button, TextField} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
-import '../css/coursepage.scss'
-import StarBorderIcon from '@material-ui/icons/StarBorder'; // replace with rating from mui
-import StarIcon from '@material-ui/icons/Star';
+import BookmarkIcon from '@material-ui/icons/Bookmark'
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
+
+import '../css/coursepage.scss'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -316,15 +317,13 @@ function CoursePage(props){
 
               {firebase.auth().currentUser!=null && 
                 ( !favorite ?
-                  (<div className="favouriteIndicator">
-                    <StarBorderIcon className={classes.favStarIcon}/>
-                    <Button className={classes.favButton} onClick={handleAddToFavList}>Add to favourites</Button>
+                  (<div className="favouriteIndicator" onClick={handleAddToFavList}>
+                      <BookmarkBorderIcon className={classes.favStarIcon}/>
                   </div>)
                   :
                   (
-                    <div className="favouriteIndicator">
-                      <StarIcon className={classes.favStarIcon}/>
-                      <Button className={classes.favButton} onClick={handleRemoveFromFavList}>Remove from favourites</Button>
+                    <div className="favouriteIndicator" onClick={handleRemoveFromFavList}>
+                      <BookmarkIcon className={classes.favStarIcon}/>
                     </div>
                   )
                 )
