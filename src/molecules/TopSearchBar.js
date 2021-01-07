@@ -1,10 +1,8 @@
-import React, {useState} from 'react'
+import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import AutoComplete from '@material-ui/lab/Autocomplete'
 import {useHistory} from 'react-router-dom'
-import {Link} from 'react-router-dom'
 import '../css/header.scss'
-import { Typography } from '@material-ui/core'
 
 function TopSearchBar(props){
     

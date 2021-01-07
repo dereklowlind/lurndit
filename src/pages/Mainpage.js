@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react'
-import firebase from 'firebase'
+import React, { useState } from 'react'
 import 'firebase/firestore'
 import {Button, Dialog, DialogContent, DialogContentText, 
-  DialogTitle, AutoComplete, TextField, DialogActions, 
+  DialogTitle, TextField, DialogActions, 
   CircularProgress, IconButton, Snackbar} 
 from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
@@ -33,33 +32,33 @@ function Mainpage(props){
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
-  const [showMessages, setShowMessages] = useState([false, false, false, false])
+  // const [showMessages, setShowMessages] = useState([false, false, false, false])
 
   //request functions
   const handleAdd = () => {
     setSubmitting(true)
 
-    if (courseCode == "" || university== "" || courseTitle=="" || courseSubject=="") {
+    if (courseCode === "" || university=== "" || courseTitle==="" || courseSubject==="") {
       const newEmpty = []
-      if (courseCode == "") {
+      if (courseCode === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
       }
 
-      if (courseSubject == "") {
+      if (courseSubject === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
       }
 
-      if (courseTitle == "") {
+      if (courseTitle === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
       }
 
-      if (university == "") {
+      if (university === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)

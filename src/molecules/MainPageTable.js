@@ -1,8 +1,8 @@
 import React from 'react'
-import {Table, TableBody, TableCell,TableContainer, TableHead, TableRow, Paper } from '@material-ui/core'
+import {Table, TableBody, TableCell,TableContainer, TableRow, Paper } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 function MainPageTable(props){
-    if(props.lists == []){
+    if(props.lists === []){
         return <div></div>
     }
     return(

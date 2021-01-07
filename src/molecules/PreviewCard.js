@@ -1,4 +1,3 @@
-import { BorderColor } from "@material-ui/icons";
 import { ReactTinyLink } from "react-tiny-link";
 
 function isValidHttpUrl(string) {

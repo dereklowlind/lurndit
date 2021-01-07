@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Grid, Paper, Input, TextField} from '@material-ui/core'
+import {Grid, TextField} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import '../css/search.scss'
@@ -46,7 +46,7 @@ function CourseSearch(props) {
             filteredResults.push([props.lists[i].docId, props.lists[i].title, props.lists[i].subtitle])
         }
 
-        if(filteredResults.length == maxResults) {
+        if(filteredResults.length === maxResults) {
             break
         }
     }
@@ -80,7 +80,7 @@ function CourseSearch(props) {
         )
     })
     
-    var isEmpty = filteredResults.length == 0
+    var isEmpty = filteredResults.length === 0
     
     return (
         <div className="searchCourseContainer">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore';
-import {Button, Drawer, TextField} from '@material-ui/core'
+import {Button, TextField} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
 import '../css/coursepage.scss'
@@ -102,17 +102,17 @@ function removeFromFavList(db, courseTitle, props) {
 
   //delete locally without having to reload the page
   var newList = [...props.favList]
-  newList = newList.filter(element => element.courseId!=props.id)
+  newList = newList.filter(element => element.courseId!==props.id)
   props.setFavList(newList)
 
 }
 
-function sortDate(list) {
-  list.sort(function(a,b) {
-    return new Date(a.timeStamp) - new Date(b.timeStamp)
-  })
-  return list
-}
+// function sortDate(list) {
+//   list.sort(function(a,b) {
+//     return new Date(a.timeStamp) - new Date(b.timeStamp)
+//   })
+//   return list
+// }
 
 function sortField(list) {
   list.sort(function(a,b) {
@@ -121,22 +121,22 @@ function sortField(list) {
   return list
 }
 
-function updatePositions(db, rows, id) {
+// function updatePositions(db, rows, id) {
 
-  db.collection("test1").doc(id).set({
-    useForcedOrder: true
-  }, {merge: true})
+//   db.collection("test1").doc(id).set({
+//     useForcedOrder: true
+//   }, {merge: true})
 
-  for(var i = 0; i < rows.length; i++) {
-    console.log(rows[i].docId)
-    console.log(rows[i].title)
-    db.collection("test1").doc(id).collection("topics").doc(rows[i].docId).set({
-      position: i
-    }, {merge: true}).catch(function(error) {
-      console.log("Error setting new positions.")
-    })
-  }
-}
+//   for(var i = 0; i < rows.length; i++) {
+//     console.log(rows[i].docId)
+//     console.log(rows[i].title)
+//     db.collection("test1").doc(id).collection("topics").doc(rows[i].docId).set({
+//       position: i
+//     }, {merge: true}).catch(function(error) {
+//       console.log("Error setting new positions.")
+//     })
+//   }
+// }
 
 function autoSave(db, topics, id) {
   db.collection("test1").doc(id).set({
@@ -176,7 +176,7 @@ function CoursePage(props){
       if (!favorite) {
         if (props.favList.length > 0) {
           for(var i = 0; i < props.favList.length; i++) {
-            if (props.favList[i].courseId == props.id) {
+            if (props.favList[i].courseId === props.id) {
               setFavorite(true)
               break
             }
@@ -194,9 +194,9 @@ function CoursePage(props){
         }
 
         console.log(docData.useForcedOrder)
-        var localForceOrdering = (docData.useForcedOrder!=undefined) ? true : false
+        var localForceOrdering = (docData.useForcedOrder!==undefined) ? true : false
 
-        if (localForceOrdering==true) {
+        if (localForceOrdering===true) {
           localForceOrdering = (docData.useForcedOrder) ? true : false
         }
 
@@ -230,7 +230,7 @@ function CoursePage(props){
     const handleSubmit = e => {
       e.preventDefault();
 
-      if (topicTitle == "") {
+      if (topicTitle === "") {
         setMaxError(true)
         return
       }
@@ -295,7 +295,7 @@ function CoursePage(props){
 
     return(
       <div>
-      {(loading==true) ?
+      {(loading===true) ?
         (
           <div className="loadingPage">
             <CircularProgress/>
