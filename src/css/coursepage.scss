@@ -37,7 +37,13 @@ $theFont: 'Montserrat', sans-serif;
 
 .favouriteIndicator {
    display: inline-block;
-   margin-left: 70px;
+   margin-left: 20px;
+   border-radius: 5px;
+   width: 35px;
+}
+
+.favouriteIndicator:hover {
+    cursor: pointer;
 }
 
 .loadingPage {
