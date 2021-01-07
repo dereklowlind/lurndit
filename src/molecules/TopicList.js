@@ -8,6 +8,7 @@ import {makeStyles, useTheme} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import PreviewCard from './PreviewCard'
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -105,6 +106,7 @@ function TopicList(props){
                                             <div className={classes.resourceDesc}>{resource.description}</div>
                                             {/* <div>{resource.url}</div> */}
                                             <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                            <PreviewCard url={resource.url} />
                                             <div>
                                             </div>
                                         </div>
