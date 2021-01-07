@@ -117,7 +117,7 @@ function sortDate(list) {
 
 function sortField(list) {
   list.sort(function(a,b) {
-    return a.position - b.position
+    return b.position - a.position
   })
   return list
 }
