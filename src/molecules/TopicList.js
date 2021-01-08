@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '50px',
         marginRight: '50px',
         marginTop: '30px',
-        fontFamily: "'Circular-Loom'",
+        fontFamily: "'Rubik'",
     },
     accordianTitle: {
         fontWeight: 600,
@@ -98,7 +98,7 @@ function TopicList(props){
                                     setOpen(true);
                                     setResourceTopicId(topic.docId);
                                 }}>
-                                    Add Content
+                                    Add Resource
                                 </Button>
                                 </div>  
                                 {topic.resources.map((resource) => (

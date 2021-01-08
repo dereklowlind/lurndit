@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textAreaFont: {
     fontSize: '16pt',
-    fontFamily: "'Circular-Loom'",
+    fontFamily: "'Rubik'",
     fontWeight: 600
   },
   favStarIcon: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#ff6d75',
   },
   favButton: {
-    fontFamily: "'Circular-Loom'",
+    fontFamily: "'Rubik'",
     fontWeight: 600,
     color: 'gray'
 

@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
     homeButton: {
       fontSize: '22px',
-      fontFamily: "'Circular-Loom'",
+      fontFamily: "'Rubik'",
       fontWeight: 600,
       background:"none",
       textTransform: "none",
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     favListButton: {
       fontSize: '20px',
-      fontFamily: "'Circular-Loom'",
+      fontFamily: "'Rubik'",
       fontWeight: 400,
       textTransform: "none",
       color: "#696969",
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
     },
     favListHeader: {
       fontSize: '22px',
-      fontFamily: "'Circular-Loom'",
+      fontFamily: "'Rubik'",
       fontWeight: 600,
       textTransform: "none",
       color: "black",
