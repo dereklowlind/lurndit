@@ -29,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         textAlign: "left"
     },
+    resourceContainer: {
+        display: "flex",
+        justifyContent: "space-between"
+    },
     resourceTitle:{
         fontFamily: 'Circular Std',
         fontStyle: 'normal',
@@ -98,13 +102,14 @@ function TopicList(props){
                                 </Button>
                                 </div>  
                                 {topic.resources.map((resource) => (
-                                        <div key={resource.resourceId}>
-                                            <div className={classes.resourceTitle}>{resource.title}</div>
-                                            <div className={classes.resourceDesc}>{resource.description}</div>
-                                            {/* <div>{resource.url}</div> */}
-                                            <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
-                                            <PreviewCard url={resource.url} />
+                                        <div key={resource.resourceId} className={classes.resourceContainer}>
                                             <div>
+                                                <div className={classes.resourceTitle}>{resource.title}</div>
+                                                <div className={classes.resourceDesc}>{resource.description}</div>
+                                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                            </div>
+                                            <div>
+                                                <PreviewCard url={resource.url} />
                                             </div>
                                         </div>
                                 ))}

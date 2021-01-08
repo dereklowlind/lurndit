@@ -14,23 +14,27 @@ function isValidHttpUrl(string) {
 
 function PreviewCard(props){  
     if(isValidHttpUrl(props.url)){
-        // if(props.url.includes())
-        //             <iframe src={props.url}
-        //         frameborder='0'
-        //         allow='autoplay; encrypted-media'
-        //         allowfullscreen
-        //         title='video'
-        // />
-        return(
-            <ReactTinyLink
-                cardSize="small"
-                showGraphic={true}
-                maxLine={2}
-                minLine={1}
-                url={props.url}
-            />
-
-        )
+        const pattern = /https:\/\/www\.youtube\.com\/watch\?v=(.+)/;
+        const isYoutube = pattern.exec(props.url);
+        if(isYoutube !== null){
+            return(
+                <iframe src={"https://www.youtube.com/embed/"+isYoutube[1]} 
+                    allowfullscreen="allowfullscreen"
+                    width="420" height="345"
+                />
+            )
+        }else{
+            return(
+                <ReactTinyLink
+                    cardSize="small"
+                    showGraphic={true}
+                    maxLine={2}
+                    minLine={1}
+                    url={props.url}
+                />
+    
+            )
+        }
     }else{
         return(
             <div style={{
@@ -39,8 +43,9 @@ function PreviewCard(props){
                 borderWidth: "2px",
                 borderStyle: "solid",
                 marginTop: "4px",
-                padding: "2px",
-                textAlign: "center"
+                padding: "10px",
+                textAlign: "center",
+                fontSize: "50px"
             }}>404 Invalid Url</div>
     
         )
