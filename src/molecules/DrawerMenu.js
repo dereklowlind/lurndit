@@ -61,13 +61,26 @@ const useStyles = makeStyles((theme) => ({
 
     },
     favListButton: {
-      fontSize: '18px',
+      fontSize: '20px',
       fontFamily: "'Circular-Loom'",
-      fontWeight: 600,
+      fontWeight: 400,
       textTransform: "none",
-      color: "black",
-      marginLeft: "10px",
-      textDecoration: "none"
+      color: "#696969",
+      marginLeft: "30px",
+      textDecoration: "none",
+      borderRadius: '16px',
+      textDecoration: "none",
+      transition:'0.5s',
+      border: "none",
+          '&:hover': {
+            backgroundColor: '#dedede',
+            marginLeft:'40px',
+            transition:'0.5s',
+              },
+              '&:focus': {
+                outline:'none',
+                border:'#e6e6e66e',
+              },
       
     },
     favListHeader: {
@@ -76,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
       fontWeight: 600,
       textTransform: "none",
       color: "black",
-      marginTop: '5px',
+      marginTop: '15px',
       textDecoration: "none"
     }
 }));
@@ -143,7 +156,7 @@ function DrawerMenu(props) {
                         {props.favList.map((c, index) => (
                           <div key={c.courseId}>
                             <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
-                                {c.courseTitle}
+                            &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
                             </Link>
                           </div>
                         ))}

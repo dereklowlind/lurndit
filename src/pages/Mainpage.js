@@ -7,9 +7,36 @@ from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
-
+import {makeStyles, useTheme} from '@material-ui/core/styles'
 import '../css/mainpage.scss'
 
+
+const useStyles = makeStyles((theme) => ({
+  newCourseButton :{
+    textTransform: "none",
+    background: '#000000',
+    WebkitBackgroundClip: 'background',
+    WebkitTextFillColor: 'radial-gradient(circle farthest-corner at center center,white,#111) no-repeat',
+    border: 0,
+    fontSize: '18px',
+    color:'white',
+    fontWeight: 700,
+    borderRadius: '30px',
+    boxShadow: '0 3px 5px 2px',
+    height: 48,
+    padding: '0 30px',
+    transition:'0.4s',
+    '&:hover':{
+      background: '#FFFFFF',
+      color:'#000000',
+      transition:'0.4s',
+      boxShadow: 'none',
+      border:'solid 1px #000000'
+
+    }
+
+}  
+}));
 
 const errorMessages = [
   "Fields cannot be empty.",
@@ -19,6 +46,7 @@ const errorMessages = [
 ]
 
 function Mainpage(props){
+  const classes = useStyles();
   const db = props.db;
   let history = useHistory()
 
@@ -210,9 +238,7 @@ function Mainpage(props){
           </div>
           <div className="commandSection">
             {!props.coursesLoading &&
-              <Button 
-              variant="outlined"
-              color="primary" 
+              <Button className={classes.newCourseButton}
               onClick={() => setOpen(true)}
               >
                 Add Course +
