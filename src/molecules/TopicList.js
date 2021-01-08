@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '50px',
         marginRight: '50px',
         marginTop: '30px',
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: "'Circular-Loom'",
     },
     accordianTitle: {
         fontWeight: 600,

@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
     textAreaFont: {
         fontSize: '24pt',
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: "'Circular-Loom'",
         fontWeight: 600
     },
     
