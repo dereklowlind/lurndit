@@ -29,6 +29,8 @@ const db = firebase.firestore();
 
 
 function App() {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [openSigninDialog, setOpenSigninDialog] = useState(false);
   const [favList, setFavList] = useState([]);
   const [lists, setLists] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false)
@@ -80,11 +82,14 @@ function App() {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
       <Router>
-        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} setFavList={setFavList}/>
+        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} setFavList={setFavList}
+          isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}
+          openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
+        />
         <div className="pageContainer">
-          <DrawerMenu favList={favList}/>
+          <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>
             <Switch>
-              <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList}/>} /> 
+              <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} />} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId}/>)}/>
             </Switch>
         </div>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
-import {Drawer, Hidden} from '@material-ui/core'
+import {Button, Drawer, Hidden} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home';
 import '../css/drawer.scss'
 import { Link } from 'react-router-dom'
@@ -91,6 +91,10 @@ const useStyles = makeStyles((theme) => ({
       color: "black",
       marginTop: '15px',
       textDecoration: "none"
+    },
+    signInButton: {
+      marginTop: "5px",
+      marginLeft: "5px"
     }
 }));
 
@@ -153,6 +157,9 @@ function DrawerMenu(props) {
                       </div>
                       <div>
                         <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
+                        {!props.isSignedIn &&
+                          <Button className={classes.signInButton} variant="outlined" onClick={() => props.setOpenSigninDialog(true)}>Sign in/up</Button>
+                        }
                         {props.favList.map((c, index) => (
                           <div key={c.courseId}>
                             <Link className={classes.favListButton} to={`/course/${c.courseId}`}>

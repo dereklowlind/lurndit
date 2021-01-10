@@ -24,8 +24,11 @@ const uiConfig = {
 };
 
 function Auth(props) {
-    const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-    const [open, setOpen] = useState(false);
+    const isSignedIn = props.isSignedIn;
+    const setIsSignedIn = props.setIsSignedIn;
+    const open = props.openSigninDialog;
+    const setOpen = props.setOpenSigninDialog;
+    // openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
 
     // Listen to the Firebase Auth state and set the local state.
     useEffect(() => {
@@ -63,11 +66,6 @@ function Auth(props) {
 
     if (!isSignedIn) {
       return (
-        // <div>
-        //   <h1>My App</h1>
-        //   <p>Please sign-in:</p>
-        //   <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-        // </div>
         <div>
           {signinDialog}
           <Button variant="outlined" onClick={() => setOpen(true)}>Sign in/up</Button>

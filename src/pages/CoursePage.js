@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textAreaFont: {
     fontSize: '16pt',
-    fontFamily: "'Rubik'",
+    fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600
   },
   favStarIcon: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#ff6d75',
   },
   favButton: {
-    fontFamily: "'Rubik'",
+    fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600,
     color: 'gray'
 
