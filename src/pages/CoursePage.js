@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'firebase/firestore';
-import {Button, TextField} from '@material-ui/core'
+import {Button, TextField, Tooltip} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import TopicList from '../molecules/TopicList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
@@ -318,12 +318,20 @@ function CoursePage(props){
               {firebase.auth().currentUser!=null && 
                 ( !favorite ?
                   (<div className="favouriteIndicator" onClick={handleAddToFavList}>
-                      <BookmarkBorderIcon className={classes.favStarIcon}/>
+                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Add list to favourites list</div>} 
+                        placement="right" arrow
+                      >
+                        <BookmarkBorderIcon className={classes.favStarIcon} />
+                      </Tooltip>
                   </div>)
                   :
                   (
                     <div className="favouriteIndicator" onClick={handleRemoveFromFavList}>
-                      <BookmarkIcon className={classes.favStarIcon}/>
+                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Remove list from favourites list</div>} 
+                        placement="right" arrow
+                      >
+                        <BookmarkIcon className={classes.favStarIcon}/>
+                      </Tooltip>
                     </div>
                   )
                 )

@@ -1,4 +1,4 @@
-$theFont: 'Montserrat', sans-serif;
+$theFont: 'Rubik';
 
 
 .searchResultContainer {
@@ -17,12 +17,14 @@ $theFont: 'Montserrat', sans-serif;
     padding-top: -5px;
     border: solid #e6e6e66e 2px;
     font-family: $theFont;
+    transition: 0.4s;
     box-shadow: 2px 4.6px 9.6px rgba(0, 0, 0, 0.17);
 }
 
 .searchResult:hover {
     background-color: #dedede;
     transition: 0.4s;
+    margin-left: 15px;
 }
 
 .searchBoxContainer {

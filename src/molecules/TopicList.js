@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '50px',
         marginRight: '50px',
         marginTop: '30px',
-        fontFamily: "'Montserrat', sans-serif",
+        fontFamily: "'Rubik'",
     },
     accordianTitle: {
         fontWeight: 600,
@@ -28,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
     details:{
         display: "block",
         textAlign: "left"
+    },
+    resourceContainer: {
+        display: "flex",
+        marginTop: '10px',
+        border: '1px solid #B9B9B9',
+        justifyContent: "space-between",
+        borderRadius: '8px',
+        padding:'17px',
+        fontColor: '#696969',
     },
     resourceTitle:{
         fontFamily: 'Circular Std',
@@ -90,21 +99,22 @@ function TopicList(props){
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
                                 <div>
-                                <Button variant="outlined" color="primary" onClick={() => {
+                                <Button variant="outlined" type='submit' onClick={() => {
                                     setOpen(true);
                                     setResourceTopicId(topic.docId);
                                 }}>
-                                    Add Content
+                                    Add Resource
                                 </Button>
                                 </div>  
                                 {topic.resources.map((resource) => (
-                                        <div key={resource.resourceId}>
-                                            <div className={classes.resourceTitle}>{resource.title}</div>
-                                            <div className={classes.resourceDesc}>{resource.description}</div>
-                                            {/* <div>{resource.url}</div> */}
-                                            <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
-                                            <PreviewCard url={resource.url} />
+                                        <div key={resource.resourceId} className={classes.resourceContainer}>
                                             <div>
+                                                <div className={classes.resourceTitle}>{resource.title}</div>
+                                                <div className={classes.resourceDesc}>{resource.description}</div>
+                                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                            </div>
+                                            <div>
+                                                <PreviewCard url={resource.url} />
                                             </div>
                                         </div>
                                 ))}

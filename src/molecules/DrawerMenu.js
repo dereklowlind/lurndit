@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
-import {Drawer, Hidden} from '@material-ui/core'
+import {Button, Drawer, Hidden, Tooltip} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home';
 import '../css/drawer.scss'
 import { Link } from 'react-router-dom'
@@ -40,30 +40,61 @@ const useStyles = makeStyles((theme) => ({
     },
     homeButton: {
       fontSize: '22px',
-      fontFamily: "'Montserrat', sans-serif",
+      fontFamily: "'Rubik'",
       fontWeight: 600,
+      background:"none",
       textTransform: "none",
       color: "black",
-      textDecoration: "none"
+      borderRadius: '16px',
+      textDecoration: "none",
+      transition:'0.5s',
+      border: "none",
+          '&:hover': {
+            backgroundColor: '#dedede',
+            marginLeft:'5px',
+            transition:'0.5s',
+              },
+              '&:focus': {
+                outline:'none',
+                border:'#e6e6e66e',
+              },
+
     },
     favListButton: {
-      fontSize: '18px',
-      fontFamily: "'Montserrat', sans-serif",
-      fontWeight: 600,
+      fontSize: '20px',
+      fontFamily: "'Rubik'",
+      fontWeight: 400,
       textTransform: "none",
-      color: "black",
-      marginLeft: "10px",
-      textDecoration: "none"
+      color: "#696969",
+      marginLeft: "30px",
+      textDecoration: "none",
+      borderRadius: '16px',
+      textDecoration: "none",
+      transition:'0.5s',
+      border: "none",
+          '&:hover': {
+            backgroundColor: '#dedede',
+            marginLeft:'40px',
+            transition:'0.5s',
+              },
+              '&:focus': {
+                outline:'none',
+                border:'#e6e6e66e',
+              },
       
     },
     favListHeader: {
       fontSize: '22px',
-      fontFamily: "'Montserrat', sans-serif",
+      fontFamily: "'Rubik'",
       fontWeight: 600,
       textTransform: "none",
       color: "black",
-      marginTop: '5px',
-      textDecoration: "underline"
+      marginTop: '15px',
+      textDecoration: "none"
+    },
+    signInButton: {
+      marginTop: "5px",
+      marginLeft: "5px"
     }
 }));
 
@@ -117,17 +148,26 @@ function DrawerMenu(props) {
                     
                     <div className="drawerContent">
                       <div className="homeButtons">
+                        <div style={{display: 'inline-block'}} >
+                        🏠 &nbsp; &nbsp; 
                         <Link className={classes.homeButton} to="/">
-                          <HomeIcon style={{marginLeft: '-10px', marginRight: '10px'}}/>
-                          Home
+                        &nbsp; Home &nbsp;
                         </Link>
+                        </div>
                       </div>
                       <div>
-                        <div className={classes.favListHeader}>Favourites List</div>
+                        <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
+                          placement="right" arrow
+                        >
+                          <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
+                        </Tooltip>
+                        {!props.isSignedIn &&
+                          <Button className={classes.signInButton} variant="outlined" onClick={() => props.setOpenSigninDialog(true)}>Sign in/up</Button>
+                        }
                         {props.favList.map((c, index) => (
                           <div key={c.courseId}>
                             <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
-                                {c.courseTitle}
+                            &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
                             </Link>
                           </div>
                         ))}
