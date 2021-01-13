@@ -8,6 +8,8 @@ import Helmet from 'react-helmet'
 import firebase from 'firebase'
 import 'firebase/firestore';
 import { useEffect, useState } from 'react'
+import ReactGA from 'react-ga';
+
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -29,6 +31,8 @@ const db = firebase.firestore();
 
 
 function App() {
+  ReactGA.initialize('UA-177822253-1')
+  ReactGA.pageview(window.location.pathname + window.location.search)
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openSigninDialog, setOpenSigninDialog] = useState(false);
   const [favList, setFavList] = useState([]);
