@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import 'firebase/firestore'
+import firebase from 'firebase'
 import {Button, Dialog, DialogContent, DialogContentText, 
   DialogTitle, TextField, DialogActions, 
   CircularProgress, IconButton, Snackbar} 
@@ -8,6 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import CourseSearch from '../molecules/CourseSearch'
 import { useHistory } from 'react-router-dom'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
+import {useAuthState} from 'react-firebase-hooks/auth'
 import '../css/mainpage.scss'
 
 
@@ -49,7 +51,6 @@ function Mainpage(props){
   const classes = useStyles();
   const db = props.db;
   let history = useHistory()
-
   //state
   //const [lists, setLists] = useState([]);
   const [open, setOpen] = useState(false);
@@ -60,6 +61,7 @@ function Mainpage(props){
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
+  const [user, loading, error] = useAuthState(firebase.auth());
   // const [showMessages, setShowMessages] = useState([false, false, false, false])
 
   //request functions
@@ -101,7 +103,9 @@ function Mainpage(props){
       title: courseCode,
       university: university,
       description: courseTitle,
-      subject: courseSubject
+      subject: courseSubject,
+      creatorId: user.uid,
+      creatorName: user.displayName
     })
     .then(function() {
       props.setRecentTitle(courseCode)
@@ -237,12 +241,16 @@ function Mainpage(props){
             </div>
           </div>
           <div className="commandSection">
-            {!props.coursesLoading &&
-              <Button className={classes.newCourseButton}
-              onClick={() => setOpen(true)}
-              >
-                Add Course +
-              </Button>
+            {user &&
+              <div>
+              {(!props.coursesLoading) &&
+                <Button className={classes.newCourseButton}
+                onClick={() => setOpen(true)}
+                >
+                  Add Course +
+                </Button>
+              }
+              </div>
             }
             
           </div>

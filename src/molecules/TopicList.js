@@ -3,12 +3,14 @@ import {
     Accordion, AccordionSummary, AccordionDetails, Button, TextField,
     Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
 } from '@material-ui/core'
+import firebase from 'firebase'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {makeStyles} from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import PreviewCard from './PreviewCard'
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 const useStyles = makeStyles((theme) => ({
     accordion: {
@@ -58,6 +60,7 @@ function TopicList(props){
     const [resourceDesc, setResourceDesc] = useState("");
     const [resourceUrl, setResourceUrl] = useState(""); 
     const [resourceTopicId, setResourceTopicId] = useState("");
+    const [user, loading, error] = useAuthState(firebase.auth())
     
     const classes = useStyles()
 
@@ -68,6 +71,10 @@ function TopicList(props){
         setResourceDesc("");
         setResourceUrl("");
         setResourceTopicId("");
+    }
+    
+    const handleTopicDelete = (id) => {
+        props.deleteTopic(id)
     }
     
     const onDragEnd = (result) => {
@@ -84,6 +91,8 @@ function TopicList(props){
     }
 
     function Topic({topic, index}) {
+        console.log(topic.creatorId)
+        console.log(user.uid)
         return(
             <Draggable draggableId={topic.docId} index={index}>
                 {provided => (
@@ -96,6 +105,11 @@ function TopicList(props){
                             >
                                 <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
                                 {topic.title}
+                                {topic.creatorId == user.uid &&
+                                    <Button variant='outlined'color='secondary' onClick={handleTopicDelete(topic.docId)}>
+                                        Delete
+                                    </Button>
+                                }
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
                                 <div>

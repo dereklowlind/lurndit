@@ -7,7 +7,8 @@ import TopicList from '../molecules/TopicList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import {useAuthState} from 'react-firebase-hooks/auth'
+import {Link} from 'react-router-dom'
 import '../css/coursepage.scss'
 
 
@@ -34,13 +35,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(db, title, docId, numTopics){
+function newTopic(db, title, docId, numTopics, user){
   console.log(numTopics)
     db.collection(`test1/${docId}/topics`).add({
       datetime: new Date(),
       title: title,
       resources: [],
-      position: numTopics
+      position: numTopics,
+      creatorId: user.uid,
+      creatorName: user.displayName
     })
     .then(function() {
       console.log("Document successfully written!");
@@ -159,13 +162,15 @@ function CoursePage(props){
     const db = props.db;
     const [courseTitle, setCoursetitle] = useState("")
     const [courseSubtitle, setCourseSubtitle] = useState("")
-    const [loading, setLoading] = useState(true)
+    const [pageLoading, setLoading] = useState(true)
     const [topics, setTopics] = useState([]);
     const [topicTitle, setTopicTitle] = useState("");
     const [updated, setUpdated] = useState(false)
     const [maxError, setMaxError] = useState(false)
     const [favorite, setFavorite] = useState(false)
-
+    const [courseOwner, setCourseOwner] = useState("")
+    const [user, loading, error] = useAuthState(firebase.auth())
+    const [docError, setDocError] = useState("none")
     const classes = useStyles()
 
     useEffect(() => {
@@ -189,7 +194,11 @@ function CoursePage(props){
     useEffect(() => {      
       db.collection('test1').doc(props.id).get().then(function(doc) {
         const docData = doc.data()
+        if (docData.title == undefined) {
+          setDocError("notFound")
+        }
         setCoursetitle(docData.title)
+        setCourseOwner(docData.creatorId)
         if(docData.description) {
           setCourseSubtitle(docData.description)
         }
@@ -200,32 +209,59 @@ function CoursePage(props){
         if (localForceOrdering===true) {
           localForceOrdering = (docData.useForcedOrder) ? true : false
         }
-
-        db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
-          let rows = []
-          dataEntries.forEach(doc => {
-            const timeStamp = doc.data().datetime.toDate().toString()
-            rows.push({
-              docId: doc.id,
-              timeStamp: timeStamp,
-              title: doc.data().title,
-              resources: doc.data().resources,
-              position: doc.data().position
-            })
-          }); // data entries for each
-          if(rows.length > 1) {
-              rows = sortField(rows)
-          }
-          
-          setTopics(rows);
-          setLoading(false);
-        });  
+        if(docError=="none") {
+          db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
+            let rows = []
+            dataEntries.forEach(doc => {
+              const timeStamp = doc.data().datetime.toDate().toString()
+              rows.push({
+                docId: doc.id,
+                timeStamp: timeStamp,
+                title: doc.data().title,
+                resources: doc.data().resources,
+                position: doc.data().position
+              })
+            }); // data entries for each
+            if(rows.length > 1) {
+                rows = sortField(rows)
+            }
+            
+            setTopics(rows);
+            setLoading(false);
+          });
+        }
+      }).catch(function(error){
+        console.log(error)
       })
        // db collect topics
     }, [props.id]); // when id in link /courses/:id changes it causes a "reload" of the page
 
     const getContent = (id) => {
       console.log(id)
+    }
+
+    const handleCourseDelete = () => {
+      const proceed = openConfirmation();
+      if(proceed) {
+        setLoading(true)
+        removeFromFavList(db, "", props)
+        db.collection('test1').doc(props.id).collection('topics').get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            doc.ref.delete()
+          })
+        })
+        db.collection('test1').doc(props.id).delete().then(function(){
+          console.log("Delete success.")
+          setDocError("deleted")
+          setLoading(false)
+        }).catch(function(error) {
+          console.warn(error)
+        })
+      }
+    }
+
+    const handleTopicDelete = (id) => {
+
     }
 
     const handleSubmit = e => {
@@ -235,7 +271,7 @@ function CoursePage(props){
         setMaxError(true)
         return
       }
-      newTopic(db, topicTitle, props.id, topics.length);
+      newTopic(db, topicTitle, props.id, topics.length, user);
       setTopicTitle("");
       setMaxError(false)
     }
@@ -294,9 +330,52 @@ function CoursePage(props){
       }
     }
 
+    console.log(courseOwner)
+    if(user) {
+      console.log(user.uid)
+    }
+
+    const openConfirmation = () =>{
+      return window.confirm("Are you sure you want to delete this course?")
+    }
+
+    if(docError=="notFound") {
+      return (
+        <div className="coursePage">
+          <div className="courseHeader">
+            <div className="courseTitles">
+              <div className="courseTitle">
+                {"404 Not Found"}
+              </div>
+              <div className="courseSubtitle">
+                {"We couldn't find what you were looking for, or it doesn't exist!"}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (docError=="deleted") {
+      return(
+        <div className="coursePage">
+          <div className="courseHeader">
+            <div className="courseTitles">
+              <div className="courseTitle">
+                {"Resource deleted"}
+              </div>
+              <div className="courseSubtitle">
+                <Link to="/">
+                  Back to Home
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return(
       <div>
-      {(loading===true) ?
+      {(pageLoading===true) ?
         (
           <div className="loadingPage">
             <CircularProgress/>
@@ -338,6 +417,7 @@ function CoursePage(props){
               }
               
             </div>
+          {user && 
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
               <TextField 
@@ -361,15 +441,22 @@ function CoursePage(props){
                   }
                 }}/>
               <Button variant="outlined" type='submit'
-              style={{marginLeft: '10px'}}
+                style={{marginLeft: '10px'}}
               >Add Topic</Button>
+              {(user.uid === courseOwner) &&
+              <Button variant="outlined" color="secondary" onClick={handleCourseDelete}>
+                Delete Course
+              </Button>
+              }
             </form>
           </div>
+          }
 
           <TopicList 
             db={db} 
             topics={topics} 
-            newResource={newResource} 
+            newResource={newResource}
+            deleteTopic={handleTopicDelete}
             docId={props.id} 
             switchTopic={getContent}
             onDragEnd={onDragEnd}
