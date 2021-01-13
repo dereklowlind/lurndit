@@ -13,6 +13,7 @@ function ContentContainer(props){
     const classes = useStyles();
     return(
         <div style={{
+          
             display: 'inline-block',
             border: '1px solid #B9B9B9',
             borderRadius: '8px',

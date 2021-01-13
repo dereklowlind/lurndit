@@ -31,7 +31,12 @@ const useStyles = makeStyles((theme) => ({
     },
     resourceContainer: {
         display: "flex",
-        justifyContent: "space-between"
+        marginTop: '10px',
+        border: '1px solid #B9B9B9',
+        justifyContent: "space-between",
+        borderRadius: '8px',
+        padding:'17px',
+        fontColor: '#696969',
     },
     resourceTitle:{
         fontFamily: 'Circular Std',
@@ -94,7 +99,7 @@ function TopicList(props){
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
                                 <div>
-                                <Button variant="outlined" color="primary" onClick={() => {
+                                <Button variant="outlined" type='submit' onClick={() => {
                                     setOpen(true);
                                     setResourceTopicId(topic.docId);
                                 }}>
