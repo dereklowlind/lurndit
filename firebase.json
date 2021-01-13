@@ -7,6 +7,7 @@
       "**/node_modules/**"
     ],
     // Serves index.html for requests to files or directories that do not exist
+    // this fixes the problem of non home links not working when deployed
     "rewrites": [ {
       "source": "**",
       "destination": "/index.html"
