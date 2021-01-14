@@ -91,8 +91,14 @@ function TopicList(props){
     }
 
     function Topic({topic, index}) {
+        let userUid;
+        if(user !== null){
+            userUid = user.uid;
+        }else{
+            userUid = "not signed in"
+        }
         console.log(topic.creatorId)
-        console.log(user.uid)
+        console.log(userUid)
         return(
             <Draggable draggableId={topic.docId} index={index}>
                 {provided => (
@@ -105,7 +111,7 @@ function TopicList(props){
                             >
                                 <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
                                 {topic.title}
-                                {topic.creatorId == user.uid &&
+                                {topic.creatorId == userUid &&
                                     <Button variant='outlined'color='secondary' onClick={handleTopicDelete(topic.docId)}>
                                         Delete
                                     </Button>
