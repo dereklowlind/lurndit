@@ -36,7 +36,7 @@ function Auth(props) {
         setIsSignedIn(!!user);
         setOpen(false);
         if(user){
-          props.db.collection(`testUserList/${user.uid}/favouritesList`).get().then(function(querySnapshot) {
+          props.db.collection(`UserList/${user.uid}/favouritesList`).get().then(function(querySnapshot) {
             const newList = []
             querySnapshot.forEach(doc => {
               newList.push(doc.data())

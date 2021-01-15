@@ -98,7 +98,7 @@ function Mainpage(props){
       return
     }
 
-    db.collection("test1").add({
+    db.collection("Lists").add({
       datetime: new Date(),
       title: courseCode,
       university: university,

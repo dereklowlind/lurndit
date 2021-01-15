@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 function newTopic(db, title, docId, numTopics, user){
   console.log(numTopics)
-    db.collection(`test1/${docId}/topics`).add({
+    db.collection(`Lists/${docId}/topics`).add({
       datetime: new Date(),
       title: title,
       resources: [],
@@ -54,7 +54,7 @@ function newTopic(db, title, docId, numTopics, user){
   }
 
 function newResource(db, docId, topic, title, description, url){
-  db.collection(`test1/${docId}/topics`).doc(topic).update({
+  db.collection(`Lists/${docId}/topics`).doc(topic).update({
     resources: firebase.firestore.FieldValue.arrayUnion({
       datetime: new Date(),
       title: title,
@@ -72,7 +72,7 @@ function newResource(db, docId, topic, title, description, url){
   
 function addToFavList(db, courseId, courseTitle, props){
 
-  db.collection(`testUserList`).doc(firebase.auth().currentUser.uid).collection('favouritesList').add({
+  db.collection(`UserList`).doc(firebase.auth().currentUser.uid).collection('favouritesList').add({
     courseId: props.id,
     courseTitle: courseTitle,
     datetime: new Date()
@@ -96,7 +96,7 @@ function addToFavList(db, courseId, courseTitle, props){
 function removeFromFavList(db, courseTitle, props) {
 
   //delete from db, needs error handling
-  var deleteCourseQuery = db.collection(`testUserList/${firebase.auth().currentUser.uid}/favouritesList`).where('courseId', '==', props.id)
+  var deleteCourseQuery = db.collection(`UserList/${firebase.auth().currentUser.uid}/favouritesList`).where('courseId', '==', props.id)
   
   deleteCourseQuery.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
@@ -127,14 +127,14 @@ function sortField(list) {
 
 // function updatePositions(db, rows, id) {
 
-//   db.collection("test1").doc(id).set({
+//   db.collection("Lists").doc(id).set({
 //     useForcedOrder: true
 //   }, {merge: true})
 
 //   for(var i = 0; i < rows.length; i++) {
 //     console.log(rows[i].docId)
 //     console.log(rows[i].title)
-//     db.collection("test1").doc(id).collection("topics").doc(rows[i].docId).set({
+//     db.collection("Lists").doc(id).collection("topics").doc(rows[i].docId).set({
 //       position: i
 //     }, {merge: true}).catch(function(error) {
 //       console.log("Error setting new positions.")
@@ -143,14 +143,14 @@ function sortField(list) {
 // }
 
 function autoSave(db, topics, id) {
-  db.collection("test1").doc(id).set({
+  db.collection("Lists").doc(id).set({
     useForcedOrder: true
   }, {merge: true})
 
   for(var i = 0; i < topics.length; i++) {
     console.log(topics[i].docId)
     console.log(topics[i].title)
-    db.collection("test1").doc(id).collection("topics").doc(topics[i].docId).set({
+    db.collection("Lists").doc(id).collection("topics").doc(topics[i].docId).set({
       position: i
     }, {merge: true}).catch(function(error) {
       console.log("Error setting new positions.")
@@ -192,7 +192,7 @@ function CoursePage(props){
     }, [props.favList])
 
     useEffect(() => {      
-      db.collection('test1').doc(props.id).get().then(function(doc) {
+      db.collection('Lists').doc(props.id).get().then(function(doc) {
         const docData = doc.data()
         if (docData.title == undefined) {
           setDocError("notFound")
@@ -210,7 +210,7 @@ function CoursePage(props){
           localForceOrdering = (docData.useForcedOrder) ? true : false
         }
         if(docError=="none") {
-          db.collection(`test1/${props.id}/topics`).onSnapshot((dataEntries) => {
+          db.collection(`Lists/${props.id}/topics`).onSnapshot((dataEntries) => {
             let rows = []
             dataEntries.forEach(doc => {
               const timeStamp = doc.data().datetime.toDate().toString()
@@ -245,12 +245,12 @@ function CoursePage(props){
       if(proceed) {
         setLoading(true)
         removeFromFavList(db, "", props)
-        db.collection('test1').doc(props.id).collection('topics').get().then(function(querySnapshot) {
+        db.collection('Lists').doc(props.id).collection('topics').get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc.ref.delete()
           })
         })
-        db.collection('test1').doc(props.id).delete().then(function(){
+        db.collection('Lists').doc(props.id).delete().then(function(){
           console.log("Delete success.")
           setDocError("deleted")
           setLoading(false)
