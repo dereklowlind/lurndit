@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     accordianTitle: {
         fontWeight: 600,
         fontSize: 32,
-        marginTop: '30px'
+        marginTop: '30px',
+        position: 'relative'
     },
     expanded:{
         marginTop:'30px'
@@ -51,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
         fontStyle: 'normal',
         fontWeight: 'normal',
         fontSize: '20px'
+    },
+    deleteButton: {
+        position:  'absolute',
+        right: '50px'
     }
 }))
 
@@ -64,17 +69,31 @@ function TopicList(props){
     
     const classes = useStyles()
 
-    const handleAdd = () => {
+    const handleAddResource = () => {
         setOpen(false);
-        props.newResource(props.db, props.docId, resourceTopicId, resourceTitle, resourceDesc, resourceUrl);
+        props.newResource(props.db, props.docId, resourceTopicId, resourceTitle, resourceDesc, resourceUrl, user.uid, user.displayName);
         setResourceTitle("");
         setResourceDesc("");
         setResourceUrl("");
         setResourceTopicId("");
     }
+
+    const handleDeleteResource = (resourceInfo, topicID) => {
+        const proceed = window.confirm("Delete your resource: " + resourceInfo.title + "?")
+        if(proceed) {
+            props.deleteResource(resourceInfo, topicID)
+        } else {
+            console.log("cancelled")
+        }    
+    }
     
-    const handleTopicDelete = (id) => {
-        props.deleteTopic(id)
+    const handleTopicDelete = (id, title) => {
+        const proceed = window.confirm("Delete your topic: " + title + "?")
+        if(proceed) {
+            props.deleteTopic(id)
+        } else {
+            console.log("cancelled")
+        }
     }
     
     const onDragEnd = (result) => {
@@ -97,8 +116,7 @@ function TopicList(props){
         }else{
             userUid = "not signed in"
         }
-        console.log(topic.creatorId)
-        console.log(userUid)
+
         return(
             <Draggable draggableId={topic.docId} index={index}>
                 {provided => (
@@ -111,10 +129,10 @@ function TopicList(props){
                             >
                                 <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
                                 {topic.title}
-                                {topic.creatorId == userUid &&
-                                    <Button variant='outlined'color='secondary' onClick={handleTopicDelete(topic.docId)}>
+                                {topic.creatorID == userUid &&
+                                    <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleTopicDelete(topic.docId, topic.title)}}>
                                         Delete
-                                    </Button>
+                                    </Button> 
                                 }
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
@@ -132,6 +150,11 @@ function TopicList(props){
                                                 <div className={classes.resourceTitle}>{resource.title}</div>
                                                 <div className={classes.resourceDesc}>{resource.description}</div>
                                                 <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                                {user.uid == resource.creatorID &&
+                                                    <Button variant='outlined' color='secondary' onClick={()=>{handleDeleteResource(resource, topic.docId)}}>
+                                                        Delete Resource
+                                                    </Button>
+                                                }
                                             </div>
                                             <div>
                                                 <PreviewCard url={resource.url} />
@@ -146,11 +169,11 @@ function TopicList(props){
         )
     }
 
+    console.log(props.topics)
     const accordianList = props.topics.map((topic, index) => (
         <Topic topic={topic} key={index} index={index}/>
     ))
     
-
     return(
         <div>
         <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
@@ -193,7 +216,7 @@ function TopicList(props){
             }} color="primary">
                 Cancel
             </Button>
-            <Button onClick={handleAdd} color="primary">
+            <Button onClick={handleAddResource} color="primary">
                 Add
             </Button>
             </DialogActions>

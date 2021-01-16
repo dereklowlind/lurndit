@@ -53,13 +53,15 @@ function newTopic(db, title, docId, numTopics, user){
     });
   }
 
-function newResource(db, docId, topic, title, description, url){
+function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
   db.collection(`Lists/${docId}/topics`).doc(topic).update({
     resources: firebase.firestore.FieldValue.arrayUnion({
       datetime: new Date(),
       title: title,
       description: description,
-      url: url
+      url: url,
+      creatorID: creatorID,
+      creatorName: creatorName 
     })
   })
   .then(function() {
@@ -219,7 +221,9 @@ function CoursePage(props){
                 timeStamp: timeStamp,
                 title: doc.data().title,
                 resources: doc.data().resources,
-                position: doc.data().position
+                position: doc.data().position,
+                creatorID: doc.data().creatorId,
+                creatorName: doc.data().creatorName
               })
             }); // data entries for each
             if(rows.length > 1) {
@@ -232,6 +236,8 @@ function CoursePage(props){
         }
       }).catch(function(error){
         console.log(error)
+        setDocError("notFound")
+        setLoading(false)
       })
        // db collect topics
     }, [props.id]); // when id in link /courses/:id changes it causes a "reload" of the page
@@ -260,7 +266,38 @@ function CoursePage(props){
       }
     }
 
-    const handleTopicDelete = (id) => {
+    const deleteTopic = (id) => {
+      
+      const newList = topics.filter((element) => {
+        return element.id != id
+      })
+      setTopics(newList)
+
+      db.collection('Lists').doc(props.id).collection('topics').doc(id).delete()
+
+    }
+
+    const deleteResource = (resource, topicID) => {
+      console.log(resource)
+      const newList = topics.filter((element) => {
+        return element.resources.title != resource.title
+      })
+      setTopics(newList)
+      db.collection('Lists').doc(props.id).collection('topics').doc(topicID).update({
+        "resources": firebase.firestore.FieldValue.arrayRemove(
+          {
+            "creatorID": resource.creatorID,
+            "creatorName": resource.creatorName,
+            "datetime": resource.datetime,
+            "description": resource.description,
+            "title": resource.title,
+            "url": resource.url
+          }
+        )
+      }).catch((error)=>{
+        console.log(error)
+        
+      })
 
     }
 
@@ -456,7 +493,8 @@ function CoursePage(props){
             db={db} 
             topics={topics} 
             newResource={newResource}
-            deleteTopic={handleTopicDelete}
+            deleteResource={deleteResource}
+            deleteTopic={deleteTopic}
             docId={props.id} 
             switchTopic={getContent}
             onDragEnd={onDragEnd}
