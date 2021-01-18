@@ -153,7 +153,7 @@ function autoSave(db, topics, id) {
     console.log(topics[i].docId)
     console.log(topics[i].title)
     db.collection("Lists").doc(id).collection("topics").doc(topics[i].docId).set({
-      position: i
+      position: (topics.length - i - 1)
     }, {merge: true}).catch(function(error) {
       console.log("Error setting new positions.")
     })
@@ -172,6 +172,7 @@ function CoursePage(props){
     const [favorite, setFavorite] = useState(false)
     const [courseOwner, setCourseOwner] = useState("")
     const [user, loading, error] = useAuthState(firebase.auth())
+    const [forceOrder, setForceOrder] = (useState(false))
     const [docError, setDocError] = useState("none")
     const classes = useStyles()
 
@@ -210,7 +211,9 @@ function CoursePage(props){
 
         if (localForceOrdering===true) {
           localForceOrdering = (docData.useForcedOrder) ? true : false
+          setForceOrder(localForceOrdering)
         }
+        
         if(docError=="none") {
           db.collection(`Lists/${props.id}/topics`).onSnapshot((dataEntries) => {
             let rows = []
@@ -314,9 +317,16 @@ function CoursePage(props){
     }
 
     const reorder = (list, startIndex, endIndex) => {
-      const result = Array.from(list)
+      console.log(list)
+      const result = [...list]
       const [removed] = result.splice(startIndex, 1)
       result.splice(endIndex, 0, removed)
+      console.log(result)
+      result.forEach((element, index)=> {
+        element.position = (result.length-index-1)
+      })
+      console.log(result)
+
       return result
     }
 
@@ -329,7 +339,8 @@ function CoursePage(props){
       if (result.destination.index === result.source.index) {
         return;
       }
-  
+      setForceOrder(true)
+
       const rows = reorder(
         topics,
         result.source.index,
@@ -337,8 +348,7 @@ function CoursePage(props){
       );
 
       setTopics(rows);
-      setUpdated(!updated)
-
+      setUpdated(!updated);
       //putting this function here breaks dnd, so maybe just let it end
       // updatePositions(props.db, rows, props.id)
 
@@ -365,11 +375,6 @@ function CoursePage(props){
           alert("this is not a favorite")
         }
       }
-    }
-
-    console.log(courseOwner)
-    if(user) {
-      console.log(user.uid)
     }
 
     const openConfirmation = () =>{

@@ -169,7 +169,6 @@ function TopicList(props){
         )
     }
 
-    console.log(props.topics)
     const accordianList = props.topics.map((topic, index) => (
         <Topic topic={topic} key={index} index={index}/>
     ))
