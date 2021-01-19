@@ -150,7 +150,7 @@ function TopicList(props){
                                                 <div className={classes.resourceTitle}>{resource.title}</div>
                                                 <div className={classes.resourceDesc}>{resource.description}</div>
                                                 <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
-                                                {user.uid == resource.creatorID &&
+                                                {userUid == resource.creatorID &&
                                                     <Button variant='outlined' color='secondary' onClick={()=>{handleDeleteResource(resource, topic.docId)}}>
                                                         Delete Resource
                                                     </Button>
