@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "test-lurndit"
+    "default": "test-lurndit",
+    "prod": "lurndit"
   }
 }

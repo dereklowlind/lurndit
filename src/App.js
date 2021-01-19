@@ -13,14 +13,13 @@ import ReactGA from 'react-ga';
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
-  authDomain: "test-lurndit.firebaseapp.com",
-  databaseURL: "https://test-lurndit.firebaseio.com",
-  projectId: "test-lurndit",
-  storageBucket: "test-lurndit.appspot.com",
-  messagingSenderId: "571339658382",
-  appId: "1:571339658382:web:6c18a6978988089f41e5df",
-  measurementId: "G-Z2K9NQHKSW"
+  apiKey: "AIzaSyAFzMMueZ43a2HvkJMaXCJIG7HZywlSKs0",
+  authDomain: "lurndit.firebaseapp.com",
+  projectId: "lurndit",
+  storageBucket: "lurndit.appspot.com",
+  messagingSenderId: "106048239774",
+  appId: "1:106048239774:web:5eb22d9b0aca85527ae38f",
+  measurementId: "G-1XSHH9YMB8"
 };
 
 if (!firebase.apps.length) {
