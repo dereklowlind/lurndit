@@ -100,10 +100,11 @@ function TopicList(props){
         props.onDragEnd(result)
     }
 
-    const openInNewTab = (url) => {
-        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-        if (newWindow) newWindow.opener = null
-      }
+    // const openInNewTab = (url) => {
+    //     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    //     if (newWindow) newWindow.opener = null
+    //   }
+    
     // console.log("in showtopictable", props.topics);
     if(props.topics === []){
         return <div>No topics found</div>
@@ -158,7 +159,7 @@ function TopicList(props){
                                             <div>
                                                 <div className={classes.resourceTitle}>{resource.title}</div>
                                                 <div className={classes.resourceDesc}>{resource.description}</div>
-                                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                                {/* <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link> */}
                                                 {userUid == resource.creatorID &&
                                                     <Button variant='outlined' color='secondary' onClick={()=>{handleDeleteResource(resource, topic.docId)}}>
                                                         Delete Resource
