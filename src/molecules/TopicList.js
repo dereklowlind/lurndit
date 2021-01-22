@@ -118,7 +118,7 @@ function TopicList(props){
         }
 
         return(
-            <Draggable draggableId={topic.docId} index={index}>
+            <Draggable draggableId={topic.docId} index={index} isDragDisabled={!props.isSignedIn}>
                 {provided => (
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Accordion key={topic.docId} className={classes.accordion}>
@@ -137,12 +137,21 @@ function TopicList(props){
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
                                 <div>
-                                <Button variant="outlined" type='submit' onClick={() => {
-                                    setOpen(true);
-                                    setResourceTopicId(topic.docId);
-                                }}>
-                                    Add Resource
-                                </Button>
+                                {props.isSignedIn ?
+                                    <Button variant="outlined" type='submit' onClick={() => {
+                                        setOpen(true);
+                                        setResourceTopicId(topic.docId);
+                                    }}>
+                                        Add Resource
+                                    </Button>
+                                    :
+                                    <Button variant="outlined" type='submit' onClick={() => {
+                                        props.setOpenSigninDialog(true)
+                                    }}>
+                                        Add Resource
+                                    </Button>
+                                }
+                                
                                 </div>  
                                 {topic.resources.map((resource) => (
                                         <div key={resource.resourceId} className={classes.resourceContainer}>

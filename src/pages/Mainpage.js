@@ -241,18 +241,25 @@ function Mainpage(props){
             </div>
           </div>
           <div className="commandSection">
-            {user &&
               <div>
               {(!props.coursesLoading) &&
-                <Button className={classes.newCourseButton}
-                onClick={() => setOpen(true)}
-                >
-                  Add Course +
-                </Button>
+                <div>
+                {props.isSignedIn ?
+                  <Button className={classes.newCourseButton}
+                  onClick={() => setOpen(true)}
+                  >
+                    Add Course +
+                  </Button>
+                  :
+                  <Button className={classes.newCourseButton}
+                  onClick={() => props.setOpenSigninDialog(true)}
+                  >
+                    Add Course +
+                  </Button>
+                }
+                </div>
               }
               </div>
-            }
-            
           </div>
           <div className="courseSection">
             {props.coursesLoading ? 
