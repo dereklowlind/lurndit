@@ -100,10 +100,11 @@ function TopicList(props){
         props.onDragEnd(result)
     }
 
-    const openInNewTab = (url) => {
-        const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-        if (newWindow) newWindow.opener = null
-      }
+    // const openInNewTab = (url) => {
+    //     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
+    //     if (newWindow) newWindow.opener = null
+    //   }
+    
     // console.log("in showtopictable", props.topics);
     if(props.topics === []){
         return <div>No topics found</div>
@@ -118,7 +119,7 @@ function TopicList(props){
         }
 
         return(
-            <Draggable draggableId={topic.docId} index={index}>
+            <Draggable draggableId={topic.docId} index={index} isDragDisabled={!props.isSignedIn}>
                 {provided => (
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                         <Accordion key={topic.docId} className={classes.accordion}>
@@ -137,19 +138,28 @@ function TopicList(props){
                             </AccordionSummary>
                             <AccordionDetails className={classes.details}>
                                 <div>
-                                <Button variant="outlined" type='submit' onClick={() => {
-                                    setOpen(true);
-                                    setResourceTopicId(topic.docId);
-                                }}>
-                                    Add Resource
-                                </Button>
+                                {props.isSignedIn ?
+                                    <Button variant="outlined" type='submit' onClick={() => {
+                                        setOpen(true);
+                                        setResourceTopicId(topic.docId);
+                                    }}>
+                                        Add Resource
+                                    </Button>
+                                    :
+                                    <Button variant="outlined" type='submit' onClick={() => {
+                                        props.setOpenSigninDialog(true)
+                                    }}>
+                                        Add Resource
+                                    </Button>
+                                }
+                                
                                 </div>  
                                 {topic.resources.map((resource) => (
                                         <div key={resource.resourceId} className={classes.resourceContainer}>
                                             <div>
                                                 <div className={classes.resourceTitle}>{resource.title}</div>
                                                 <div className={classes.resourceDesc}>{resource.description}</div>
-                                                <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link>
+                                                {/* <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link> */}
                                                 {userUid == resource.creatorID &&
                                                     <Button variant='outlined' color='secondary' onClick={()=>{handleDeleteResource(resource, topic.docId)}}>
                                                         Delete Resource

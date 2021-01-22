@@ -19,3 +19,13 @@
     margin-top: 40px;
     text-align: left;
 }
+
+.signInPrompt {
+    color: blue;
+    transition: color 0.2s;
+}
+
+.signInPrompt:hover {
+    color: #4F99FF;
+    cursor: pointer;
+}

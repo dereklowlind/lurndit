@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
     },
     signInButton: {
       marginTop: "5px",
-      marginLeft: "5px"
+      color: "gray"
     }
 }));
 
@@ -162,7 +162,9 @@ function DrawerMenu(props) {
                           <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
                         </Tooltip>
                         {!props.isSignedIn &&
-                          <Button className={classes.signInButton} variant="outlined" onClick={() => props.setOpenSigninDialog(true)}>Sign in/up</Button>
+                          <div className={classes.signInButton}>
+                            <span className="signInPrompt" onClick={()=>props.setOpenSigninDialog(true)}>Sign in</span> to add favorites!
+                          </div>
                         }
                         {props.favList.map((c, index) => (
                           <div key={c.courseId}>

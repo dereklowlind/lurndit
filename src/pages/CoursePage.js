@@ -307,6 +307,11 @@ function CoursePage(props){
     const handleSubmit = e => {
       e.preventDefault();
 
+      if (!props.isSignedIn) {
+        props.setOpenSigninDialog(true)
+        return
+      }
+
       if (topicTitle === "") {
         setMaxError(true)
         return
@@ -459,7 +464,6 @@ function CoursePage(props){
               }
               
             </div>
-          {user && 
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
               <TextField 
@@ -485,18 +489,23 @@ function CoursePage(props){
               <Button variant="outlined" type='submit'
                 style={{marginLeft: '10px'}}
               >Add Topic</Button>
-              {(user.uid === courseOwner) &&
-              <Button variant="outlined" color="secondary" onClick={handleCourseDelete}>
-                Delete Course
-              </Button>
+              {user &&
+              <div>
+                {(user.uid === courseOwner) &&
+                <Button variant="outlined" color="secondary" onClick={handleCourseDelete}>
+                  Delete Course
+                </Button>
+                }
+              </div>
               }
             </form>
           </div>
-          }
 
           <TopicList 
             db={db} 
             topics={topics} 
+            isSignedIn={props.isSignedIn}
+            setOpenSigninDialog={props.setOpenSigninDialog}
             newResource={newResource}
             deleteResource={deleteResource}
             deleteTopic={deleteTopic}

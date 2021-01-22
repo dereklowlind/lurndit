@@ -55,9 +55,9 @@ function Mainpage(props){
   //const [lists, setLists] = useState([]);
   const [open, setOpen] = useState(false);
   const [courseTitle, setCourseTitle] = useState("")
-  const [courseSubject, setCourseSubject] = useState("")
+  const [courseSubject, setCourseSubject] = useState("N/A")
   const [courseCode, setCourseCode] = useState("")
-  const [university, setUniversity] = useState("")
+  const [university, setUniversity] = useState("University of Victoria")
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
@@ -156,7 +156,7 @@ function Mainpage(props){
           onChange={(e) => setCourseCode(e.target.value)}
         />
         {/* Should be autocomplete when we have a list of valid subjects */}
-        <TextField
+        {/* <TextField
           margin="dense"
           error={dialogEmpty[1]}
           id="subject"
@@ -165,7 +165,7 @@ function Mainpage(props){
           value={courseSubject}
           placeholder="eg. Math"
           onChange={(e) => setCourseSubject(e.target.value)}
-        />
+        /> */}
         <TextField
           margin="dense"
           id="title"
@@ -176,7 +176,7 @@ function Mainpage(props){
           placeholder="eg. Introductory Calculus"
           onChange={(e) => setCourseTitle(e.target.value)}
         />
-        <TextField
+        {/* <TextField
           margin="dense"
           id="university"
           error={dialogEmpty[3]}
@@ -185,7 +185,7 @@ function Mainpage(props){
           value={university}
           placeholder="eg. University of Victoria"
           onChange={(e) => setUniversity(e.target.value)}
-        />
+        /> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={(e) => {
@@ -241,18 +241,25 @@ function Mainpage(props){
             </div>
           </div>
           <div className="commandSection">
-            {user &&
               <div>
               {(!props.coursesLoading) &&
-                <Button className={classes.newCourseButton}
-                onClick={() => setOpen(true)}
-                >
-                  Add Course +
-                </Button>
+                <div>
+                {props.isSignedIn ?
+                  <Button className={classes.newCourseButton}
+                  onClick={() => setOpen(true)}
+                  >
+                    Add Course +
+                  </Button>
+                  :
+                  <Button className={classes.newCourseButton}
+                  onClick={() => props.setOpenSigninDialog(true)}
+                  >
+                    Add Course +
+                  </Button>
+                }
+                </div>
               }
               </div>
-            }
-            
           </div>
           <div className="courseSection">
             {props.coursesLoading ? 
