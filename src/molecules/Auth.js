@@ -29,7 +29,7 @@ function Auth(props) {
     const open = props.openSigninDialog;
     const setOpen = props.setOpenSigninDialog;
     // openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
-
+    const [pwdResetHelp, setPwdResetHelp] = useState(false);
     // Listen to the Firebase Auth state and set the local state.
     useEffect(() => {
       const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
@@ -55,6 +55,9 @@ function Auth(props) {
         <DialogTitle id="form-dialog-title">Signin/Signup</DialogTitle>
         <DialogContent>
           <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+          <Button color="primary" size="small"
+            onClick={() => setPwdResetHelp(true)}
+          >How to reset email password</Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={(e) => {setOpen(false)}} color="primary">
@@ -64,10 +67,25 @@ function Auth(props) {
       </Dialog>
     )
 
+    const pwdResetHelpDialog = (
+      <Dialog open={pwdResetHelp} onClose={() => setPwdResetHelp(false)} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={'md'}>
+        <DialogTitle id="form-dialog-title">Signin/Signup</DialogTitle>
+        <DialogContent>
+          <img src="/how_to_reset_password.png" alt="password reset help image"/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={(e) => {setPwdResetHelp(false)}} color="primary">
+                Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+
     if (!isSignedIn) {
       return (
         <div>
           {signinDialog}
+          {pwdResetHelpDialog}
           <Button variant="outlined" onClick={() => setOpen(true)}>Sign in/up</Button>
         </div>
       );
