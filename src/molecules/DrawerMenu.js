@@ -113,6 +113,45 @@ function DrawerMenu(props) {
     // const goHome = () => {
     //   history.push("/")
     // }
+    const drawerContents = (
+      <div>
+        <div className="drawerHeader">
+            <Link to="/" className="drawerTitle">
+                Lurndit
+            </Link>
+        </div>
+        
+        <div className="drawerContent">
+          <div className="homeButtons">
+            <div style={{display: 'inline-block'}} >
+            🏠 &nbsp; &nbsp; 
+            <Link className={classes.homeButton} to="/">
+            &nbsp; Home &nbsp;
+            </Link>
+            </div>
+          </div>
+          <div>
+            <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
+              placement="right" arrow
+            >
+              <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
+            </Tooltip>
+            {!props.isSignedIn &&
+              <div className={classes.signInButton}>
+                <span className="signInPrompt" onClick={()=>props.setOpenSigninDialog(true)}>Sign in</span> to add favorites!
+              </div>
+            }
+            {props.favList.map((c, index) => (
+              <div key={c.courseId}>
+                <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
+                &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
 
     return (
         <nav className={classes.drawer} aria-label="topic-container">
@@ -129,7 +168,7 @@ function DrawerMenu(props) {
                 keepMounted:true,
                 }}
             >
-                <div>Mobile drawer</div>
+                {drawerContents}
             </Drawer>
             </Hidden>
             <Hidden xsDown implementation="css">
@@ -140,42 +179,7 @@ function DrawerMenu(props) {
                     variant="permanent"
                     open
                 >
-                    <div className="drawerHeader">
-                        <Link to="/" className="drawerTitle">
-                            Lurndit
-                        </Link>
-                    </div>
-                    
-                    <div className="drawerContent">
-                      <div className="homeButtons">
-                        <div style={{display: 'inline-block'}} >
-                        🏠 &nbsp; &nbsp; 
-                        <Link className={classes.homeButton} to="/">
-                        &nbsp; Home &nbsp;
-                        </Link>
-                        </div>
-                      </div>
-                      <div>
-                        <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
-                          placement="right" arrow
-                        >
-                          <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
-                        </Tooltip>
-                        {!props.isSignedIn &&
-                          <div className={classes.signInButton}>
-                            <span className="signInPrompt" onClick={()=>props.setOpenSigninDialog(true)}>Sign in</span> to add favorites!
-                          </div>
-                        }
-                        {props.favList.map((c, index) => (
-                          <div key={c.courseId}>
-                            <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
-                            &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
+                    {drawerContents}
                 </Drawer>
             </Hidden>
         </nav>

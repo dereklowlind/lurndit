@@ -15,7 +15,7 @@ import '../css/coursepage.scss'
 const useStyles = makeStyles((theme) => ({
   topicTextArea: {
     width: '400px',
-    
+    [theme.breakpoints.down('sm')]: {width: '80%'}
   },
   textAreaFont: {
     fontSize: '16pt',
