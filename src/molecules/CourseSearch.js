@@ -8,11 +8,20 @@ const useStyles = makeStyles((theme) => ({
     searchTextArea: {
         width: '750px'
     },
+    searchTextAreaMobile: {
+        width: '100%',
+    },
     textAreaFont: {
         fontSize: '24pt',
         fontFamily: "'Rubik'",
         fontWeight: 600
     },
+    textAreaFontMobile: {
+        fontSize: '16pt',
+        fontFamily: "'Rubik'",
+        fontWeight: 600,
+        marginTop: '10px'
+    }
     
 }))
 function CourseSearch(props) {
@@ -55,7 +64,7 @@ function CourseSearch(props) {
         return (a[1] < b[1]) ? -1 : 1
     })
 
-    const rowFraction = (isMobile ? 6 : 4)
+    const rowFraction = (isMobile ? 12 : 4)
 
     const courseClick = (index) => {
         console.log(index)
@@ -82,14 +91,16 @@ function CourseSearch(props) {
     
     var isEmpty = filteredResults.length === 0
     
+    var sizeText = isMobile ? classes.textAreaFontMobile : classes.textAreaFont
+
     return (
         <div className="searchCourseContainer">
             <div className="searchBoxContainer">
                 <TextField 
-                    className={classes.searchTextArea} 
+                    className={isMobile ? classes.searchTextAreaMobile : classes.searchTextArea} 
                     InputProps={{
                         classes: {
-                          input: classes.textAreaFont
+                          input: sizeText
                         }
                     }}
                     onChange={updateSearch} 
